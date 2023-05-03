@@ -1,28 +1,60 @@
-@import url('https://fonts.cdnfonts.com/css/roboto');
-.header{
+@import url("https://fonts.cdnfonts.com/css/roboto");
+.header {
     min-height: 260px;
-    background-color: #313E48;
+    background-color: #313e48;
 }
-.logo{
+
+.header-reg {
+    padding-bottom: 100px;
+}
+
+.success-header {
+	display: table;
+    background-color: #313e48;
+	height: 100vh;
+}
+
+.success-header h2 {
+	font-family: 'Roboto';
+	font-style: normal;
+	font-weight: 600;
+	font-size: 26px;
+    color: #46B3B0;
+}
+
+.success-header p {
+	font-family: 'Roboto';
+font-style: normal;
+font-weight: 600;
+font-size: 20px;
+line-height: 200%;
+color: #fff;
+}
+
+.reg-logo img {
+    width: 157px;
+}
+
+.logo {
     display: flex;
     justify-content: center;
     padding: 20px 0px 20px 0px;
     border: 1px solid rgba(0, 0, 0, 0.14);
 }
-.header .header-text1{
-    color: #FFFFFF;
+.header .header-text1 {
+    color: #ffffff;
     font-weight: 500;
     font-size: 13px;
 }
-.header .header-text2{
-    color: #CBD5D4;
+.header .header-text2 {
+    color: #cbd5d4;
     font-weight: 400;
     font-size: 12px;
 }
-.head{
+.head {
     height: 60px;
 }
-.bg-icon{
+.bg-icon {
     width: 36px;
     height: 36px;
     background: #293741;
@@ -31,29 +63,185 @@
     justify-content: center;
     padding: 6px;
 }
-.icon-text .box{
-    background: #616F79;
+.icon-text .box {
+    background: #616f79;
     border-radius: 1px;
     width: 12px;
     height: 12px;
     margin-top: 11px;
 }
 
-.icon-text p{
+.icon-text p {
     padding: 0;
     margin: 0;
 }
-.text-heading{
-    color: #FFFFFF;
+.text-heading {
+    color: #ffffff;
     font-weight: 500;
     font-size: 12px;
-
 }
-.text-paragraph{
-    color: #CCCCCC;
+.text-paragraph {
+    color: #cccccc;
     font-weight: 400;
     font-size: 11px;
 }
+input {
+    background: #404f5a;
+    border-radius: 5px;
+    width: 100%;
+    height: 37px;
+    margin-top: 15px;
+    color: #fff;
+}
+
+.reg-form input {
+    margin-top: 15px;
+    border: 0;
+    padding-left: 10px;
+}
+
+.checkbox {
+    width: 22px;
+    height: 14px;
+    border: 0;
+}
+
+.reg-form b {
+    font-family: "Roboto";
+    font-style: normal;
+    font-weight: 500;
+    font-size: 13px;
+    margin-top: 25px;
+    display: table;
+}
+
+.reg-btn {
+    background: #46b3b0;
+    border-radius: 5px;
+    display: table;
+    width: 100%;
+    text-align: center;
+    padding: 17px 0;
+    color: #ffffff;
+    font-family: "Roboto";
+    font-style: normal;
+    font-weight: 500;
+    font-size: 15px;
+    text-decoration: none;
+}
+
+input[type="checkbox"] {
+    background-color: #002b4e !important;
+    color: white;
+}
+
+input[type="checkbox"]:enabled:checked {
+    background-color: #002b4e !important;
+    color: white;
+}
+
+input[type="checkbox"]:before {
+    background-color: #002b4e !important;
+    color: white;
+}
+
+input[type="checkbox"]::before {
+    background-color: #002b4e !important;
+    color: white;
+}
+
+.checkbox {
+    display: block;
+    position: relative;
+    padding-left: 35px;
+    margin-bottom: 12px;
+    cursor: pointer;
+    font-size: 22px;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+/* Hide the browser's default checkbox */
+.checkbox input {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+    height: 0;
+    width: 0;
+}
+
+/* Create a custom checkbox */
+.checkmark {
+    position: absolute;
+    top: 8px;
+    left: 0;
+    height: 19px;
+    width: 19px;
+    background: #404f5a;
+    border-radius: 1px;
+}
+
+/* On mouse-over, add a grey background color */
+.container:hover input ~ .checkmark {
+    background-color: #ccc;
+    background: #404f5a;
+    border-radius: 1px;
+}
+
+/* When the checkbox is checked, add a blue background */
+.checkbox input:checked ~ .checkmark {
+    background-color: #2196f3;
+}
+
+/* Create the checkmark/indicator (hidden when not checked) */
+.checkmark:after {
+    content: "";
+    position: absolute;
+    display: none;
+}
+
+/* Show the checkmark when checked */
+.checkbox input:checked ~ .checkmark:after {
+    display: block;
+}
+
+/* Style the checkmark/indicator */
+.checkbox .checkmark:after {
+    left: 9px;
+    top: 5px;
+    width: 5px;
+    height: 10px;
+    border: solid white;
+    border-width: 0 3px 3px 0;
+    -webkit-transform: rotate(45deg);
+    -ms-transform: rotate(45deg);
+    transform: rotate(45deg);
+}
+
+.checkbox {
+    font-family: "Roboto";
+    font-style: normal;
+    font-weight: 500;
+    font-size: 13px;
+    line-height: 36px;
+    width: auto;
+}
+
+.reg-form {
+    width: 98%;
+    margin: auto !important;
+}
+
+.success-img {
+	width: 53%;
+	margin: auto;
+}
+
+
+
+
 .footer{
     background: #FFFFFF;
     border-radius: 30px;
@@ -65,12 +253,15 @@
     font-weight: 500;
     font-size: 12px;
     color: #313E48;
+    font-family: 'Roboto';
 }
 .first-row .text2{
     font-weight: 400;
     font-size: 12px;
     width: 209px;
     color: rgba(0, 0, 0, 0.6);
+    display: inline-flex;
+    font-family: 'Roboto';
 }
 .images-section .img-box{
     background: #DBE8E8;
@@ -100,4 +291,118 @@
     color: #FFFFFF;
     font-weight: 500;
     font-size: 15px;
+}
+
+
+.title {
+    width:100%;
+    text-align:center; 
+    position: relative;
+ }
+ 
+ .title h1 {
+    position:relative; 
+    padding:10px; 
+    background: #fff;
+    display: inline-block;
+    z-index: 1;
+    font-family: 'Roboto';
+    font-style: normal;
+    font-weight: 600;
+    font-size: 16px;
+     color: #46B3B0;
+
+ }
+ 
+ .title::after {
+    content:'';
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 42%;
+    height: 1px;
+    background: #929E9D;
+    z-index:0;
+ }
+
+ .btn-scan-location{
+    width: 100%;
+border: none;
+background: #50687A;
+border-radius: 5px;
+color: #fff;
+    padding: 7px 0px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+ }
+
+ .btn-scan-save{
+    width: 100%;
+border: none;
+background: #C7EEFF;
+border-radius: 5px;
+height: 45px;  
+    color: #1D475B;
+ }
+
+ 
+.table thead th {
+    background: #313E48;
+    color: #fff;
+    font-family: 'Roboto';
+    font-style: normal;
+    font-weight: 600;
+    font-size: 13px;
+    text-align: center;
+    color: #ACB7C0;
+    padding: 12px 0px;
+  }
+  .client-id {
+    border-radius: 10px 0px 0px 0px;
+  }
+  .scanned {
+    border-radius: 0px 10px 0px 0px;
+  }
+
+
+.table > tbody td {
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 12px;
+  text-align: center;
+  color: #313E48;
+}
+
+.btn-scan-bottle
+{
+    width: 100%;
+    border: none;
+    background: #46B3B0;
+    border-radius: 5px;
+    font-family: 'Roboto';
+font-style: normal;
+font-weight: 500;
+font-size: 15px;
+color: #fff;
+  
+    padding: 11px 0px;
+}
+
+
+.btn-scan-location img {
+  position: relative;
+}
+.btn-scan-location p {
+  line-height: 0;
+  margin-top: 15px;
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 15px;
+}
+
+.btn-scan-save img {
+	margin-top: -5px;
 }
