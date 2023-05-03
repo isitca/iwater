@@ -1,0 +1,103 @@
+@import url('https://fonts.cdnfonts.com/css/roboto');
+.header{
+    min-height: 260px;
+    background-color: #313E48;
+}
+.logo{
+    display: flex;
+    justify-content: center;
+    padding: 20px 0px 20px 0px;
+    border: 1px solid rgba(0, 0, 0, 0.14);
+}
+.header .header-text1{
+    color: #FFFFFF;
+    font-weight: 500;
+    font-size: 13px;
+}
+.header .header-text2{
+    color: #CBD5D4;
+    font-weight: 400;
+    font-size: 12px;
+}
+.head{
+    height: 60px;
+}
+.bg-icon{
+    width: 36px;
+    height: 36px;
+    background: #293741;
+    border-radius: 5px;
+    display: flex;
+    justify-content: center;
+    padding: 6px;
+}
+.icon-text .box{
+    background: #616F79;
+    border-radius: 1px;
+    width: 12px;
+    height: 12px;
+    margin-top: 11px;
+}
+
+.icon-text p{
+    padding: 0;
+    margin: 0;
+}
+.text-heading{
+    color: #FFFFFF;
+    font-weight: 500;
+    font-size: 12px;
+
+}
+.text-paragraph{
+    color: #CCCCCC;
+    font-weight: 400;
+    font-size: 11px;
+}
+.footer{
+    background: #FFFFFF;
+    border-radius: 30px;
+    position: absolute;
+    left: 0px;
+    top: 220px;
+}
+.first-row .text1{
+    font-weight: 500;
+    font-size: 12px;
+    color: #313E48;
+}
+.first-row .text2{
+    font-weight: 400;
+    font-size: 12px;
+    width: 209px;
+    color: rgba(0, 0, 0, 0.6);
+}
+.images-section .img-box{
+    background: #DBE8E8;
+    border-radius: 5px;
+    display: flex;
+    height: 100px;
+    justify-content:center ;
+    padding: 5px;
+}
+.img-box1{
+    background: #DBE8E8;
+    border-radius: 5px;
+    display: flex;
+    /* height: 100px; */
+    justify-content:center ;
+    padding: 5px;
+}
+.btn-scan{
+    width: 100%;
+    border: none;
+    background: #46B3B0;
+    border-radius: 5px;
+    height: 45px;
+}
+.btn-scan span{
+    letter-spacing: 0.02em;
+    color: #FFFFFF;
+    font-weight: 500;
+    font-size: 15px;
+}
