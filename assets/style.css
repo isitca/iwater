@@ -63,13 +63,7 @@ color: #fff;
     justify-content: center;
     padding: 6px;
 }
-.icon-text .box {
-    background: #616f79;
-    border-radius: 1px;
-    width: 12px;
-    height: 12px;
-    margin-top: 11px;
-}
+
 
 .icon-text p {
     padding: 0;
@@ -128,8 +122,8 @@ input {
     font-weight: 500;
     font-size: 15px;
     text-decoration: none;
+    border: none;
 }
-
 input[type="checkbox"] {
     background-color: #002b4e !important;
     color: white;
@@ -367,7 +361,6 @@ height: 45px;
 
 
 .table > tbody td {
-  font-family: 'Roboto';
   font-style: normal;
   font-weight: 400;
   font-size: 12px;
