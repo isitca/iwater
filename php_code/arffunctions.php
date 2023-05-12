@@ -2,7 +2,7 @@
 $datapath = "data/iwater/";
 $cookiename = 'clientid';
 $userexpire = mktime(0, 0, 0, 4, 4, 2024);  # Apr 2024 - scandit renewal time - need to update clients then
-$loctag = "";
+$loctag = "loctag";
 $showRegisterForm = false;
 
 function checkuser() {
@@ -153,6 +153,7 @@ function scanbottle($tagnum, $withpicchecked) {
           echo '<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">';
           echo '</head>';
           echo '<body>';
+          echo '<form>';
           echo '<div class="container header" id="header">';
           echo '<div class="row">';
           echo '<div class="col-sm-12 logo">';
@@ -228,12 +229,10 @@ function scanbottle($tagnum, $withpicchecked) {
           echo '<img src="assets/images/Rectangle 21.png">';
           echo '</div>';
           echo '</div>';
-          echo '<form>';
           echo '<input type="hidden"  name="LOCTAG" id="LOCTAG" value="' . $tagnum . '" >';
           echo '<input type="hidden"  name="BOTTLETAG" id="BOTTLETAG">';
           $startdate = date('YmdHis');
           echo '<input type="hidden" id="LOCDATE" name="LOCDATE" value="' . $startdate . '">';
-//          echo '<input type="hidden" checked  name="WITHPIC" id="WITHPIC" value="withpic">';
           echo '<input type="submit"  name="savebutton" id="savebutton" style="display:none; background: url(saveicon.png) no-repeat; height: 700px; width: 500px;" >';
           echo '<div id="scandit-barcode-picker"></div>';
           echo '<div id="scanicon" align="center">';
@@ -244,8 +243,8 @@ function scanbottle($tagnum, $withpicchecked) {
           echo '</div>';
           echo '</div>';
           echo '</div>';
-          echo '</form>';
           echo '</div>';
+          echo '</form>';
           echo '<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe" crossorigin="anonymous"></script>';
           echo '</body>';
           echo '</html>';
@@ -280,19 +279,127 @@ function scanbottle($tagnum, $withpicchecked) {
 
 
 function takepic($picfilename, $beforeorafter) {
-    #echo "<br>$picfilename  xx  $beforeorafter xx <br>";
-    echo '<form action="" method="post" enctype="multipart/form-data">';
-    echo '<img src="camera.png" height="400" width="600" id="cameraicon" style="cursor:pointer; display:block" onclick="cameraclick()" />';
-    echo '<input type="file" id="takepic" name="takepic" accept="image/*" capture="camera" >';
 
-    #echo '<img src=$selectedfile/>';
-    echo '<br><br>';
-    echo '<input type="submit" value="                     upload picture" name="uploadpic" id="uploadicon" style="background: url(saveicon.png) no-repeat; height: 500px; width: 1000px;';
-    echo ' display: none ';
-    echo'" >';
+echo '<html lang="en">';
+echo '<head>';
+   echo '<meta charset="utf-8">';
+   echo '<meta name="viewport" content="width=device-width, initial-scale=1">';
+   echo '<title>iWater</title>';
+   echo '<link href="assets/style.css" rel="stylesheet"/>';
+    echo '<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">';
+   echo '<link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet" />';
+   echo '<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css" integrity="sha512-5A8nwdMOWrSz20fDsjczgUidUBR8liPYU+WymTZP1lmY9G6Oc7HlZv156XqnsgNUzTyMefFTcsFH/tnJE/+xBg==" crossorigin="anonymous" referrerpolicy="no-referrer" />';
+echo '</head>';
+echo '<body>';
+echo '<div class="container header">';
+   echo '<div class="row">';
+       echo '<div class="col-sm-12 logo">';
+          echo '<img src="assets/images/logo.png"/>';
+       echo '</div>';
+       echo '<div class="col-sm-12">';
+           echo '<div class="mx-3 my-3">';
+               echo '<img src="assets/images/icons/Client_icon.png">';
+    echo "<span class='header-text1'>Client: </span> <span class='header-text2'>{$_COOKIE['clientid']}</span>";
+    echo '</div>';
+       echo '</div>';
+   echo '</div>';
+   echo '<div class="row head">';
+        echo '<div class="col-6 py-3 d-flex justify-content-center">';
+           echo '<div class="bg-icon mx-3">';
+                echo '<img src="assets/images/icons/lab_icon.png">';
+           echo '</div>';
+            echo '<div class="icon-text">';
+               echo '<p class="text-heading">iLabLocation ID:</p>';
+               echo "<p class='text-paragraph'>{$_COOKIE['loctag']}</p>";
+            echo '</div>';
+       echo '</div>';
+   echo '</div>';
+echo '</div>';
+echo '<div class="container footer">';
+    echo '<div class="row">';
+       echo '<div class="col-sm-12">';
+           echo '<div class="mx-4 first-row my-3">';
+              echo '<img src="assets/images/icons/Location_icon.png">';
+               echo '<span class="text1">Location: </span>';
+                echo '<span class="text2">1194 Summit Park Avenue, Spearville,
+                        United States</span>';
+           echo '</div>';
+      echo '</div>';
+   echo '</div>';
+    echo '<form action="" method="post" enctype="multipart/form-data">';
+  echo '<div class="row images-section camera" id="emptyBottleImage">';
+       echo '<h2 id="bottle-label-empty">Upload photo of empty bottle</h2>';
+       echo '<h2 id="bottle-label-filled" style="display: none">Upload photo of filled bottle</h2>';
+
+       echo '<div class="upload-img">';
+            echo '<div class="upload">';
+               echo '<label class="upload-area">';
+                   echo '<input type="file" id="takepic" name="takepic" accept="image/*" capture="camera" onchange="onSelectImg()">';
+                   echo '<span class="upload-button" id="cameraicon" style="cursor:pointer;" onclick="cameraclick()">';
+               echo '<i class="fa fa-camera" ></i>';
+             echo '</span>';
+    echo '</label>';
+           echo '</div>';
+           echo '<div class="mt-5 d-flex justify-content-center">';
+    echo '<img src="" id="selectedImage" height="100px;" width="100px" style="display: none">';
+
+           echo '</div>';
+           echo '<div class="mx-5 pt-5">';
+    echo '<input type="submit" value="Upload Picture" name="uploadpic" id="uploadicon" style="display: none">';
     echo "<input type=\"text\" id=\"savefilename\" name=\"savefilename\" value=\"$picfilename\" hidden >";
     echo "<input type=\"text\" id=\"beforeorafter\" name=\"beforeorafter\" value=\"$beforeorafter\" hidden >";
-    echo "</form>";
+    echo '</div>';
+       echo '</div>';
+
+    echo '</div>';
+
+echo '</form>';
+
+//    echo '<form action="" method="post" enctype="multipart/form-data">';
+//    echo '<div class="row images-section camera" id="filledBottleImage" style="display: none">';
+//    echo '<h2>Upload photo of filled bottle</h2>';
+//
+//    echo '<div class="upload-img">';
+//    echo '<div class="upload">';
+//    echo '<label class="upload-area">';
+//    echo '<input type="file" id="takepic" name="takepic" accept="image/*" capture="camera" onchange="onSelectImg()">';
+//    echo '<span class="upload-button" id="cameraicon" style="cursor:pointer;" onclick="cameraclick()">';
+//    echo '<i class="fa fa-camera" ></i>';
+//    echo '</span>';
+//    echo '</label>';
+//    echo '</div>';
+//    echo '<div class="mt-5 d-flex justify-content-center">';
+//    echo '<img src="" id="selectedImage" height="100px;" width="100px" style="display: none">';
+//
+//    echo '</div>';
+//    echo '<div class="mx-5 pt-5">';
+//    echo '<input type="submit" value="Upload Picture" name="uploadpic" id="uploadicon" style="display: none">';
+//    echo "<input type=\"text\" id=\"savefilename\" name=\"savefilename\" value=\"$picfilename\" hidden >";
+//    echo "<input type=\"text\" id=\"beforeorafter\" name=\"beforeorafter\" value=\"$beforeorafter\" hidden >";
+//    echo '</div>';
+//    echo '</div>';
+//
+//    echo '</div>';
+//
+//    echo '</form>';
+echo '</div>';
+echo '</div>';
+echo '<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe" crossorigin="anonymous"></script>';
+echo '</body>';
+echo '</html>';
+    #echo "<br>$picfilename  xx  $beforeorafter xx <br>";
+//    echo '<form action="" method="post" enctype="multipart/form-data">';
+////    echo '<img src="camera.png" height="400" width="600" id="cameraicon" style="cursor:pointer; display:block" onclick="cameraclick()" />';
+////    echo '<input type="file" id="takepic" name="takepic" accept="image/*" capture="camera" >';
+//
+//    #echo '<img src=$selectedfile/>';
+//    echo '<br><br>';
+////    echo '<input type="submit" value="upload picture" name="uploadpic" id="uploadicon" style="background: url(saveicon.png) no-repeat; height: 500px; width: 1000px;';
+////    echo ' display: none ';
+//    echo'" >';
+//    echo "<input type=\"text\" id=\"savefilename\" name=\"savefilename\" value=\"$picfilename\" hidden >";
+//    echo "<input type=\"text\" id=\"beforeorafter\" name=\"beforeorafter\" value=\"$beforeorafter\" hidden >";
+//    echo "</form>";
 }
 
 function uploadpic() { # This gets called when the camera icon is hit and form posted
@@ -325,6 +432,7 @@ function uploadpic() { # This gets called when the camera icon is hit and form p
         $uploadOk = 0;
     }
     // Allow certain file formats
+
     if($imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpeg"
         && $imageFileType != "gif" ) {
         echo "Sorry, only JPG, JPEG, PNG & GIF files are allowed.";
@@ -336,10 +444,14 @@ function uploadpic() { # This gets called when the camera icon is hit and form p
         // if everything is ok, try to upload file
     } else {
         if (move_uploaded_file($_FILES["takepic"]["tmp_name"], $target_file)) {
-            echo "<br>The file ". htmlspecialchars( basename( $_FILES["takepic"]["name"])). " has been uploaded to " . basename($target_file) . "<br>";
+//            echo "<br>The file ". htmlspecialchars( basename( $_FILES["takepic"]["name"])). " has been uploaded to " . basename($target_file) . "<br>";
 
             if ($beforeorafter == "BEFORE") {
-                echo "<br>Now Fill the Bottle before taking a second picture of the bottle<br>";
+//                echo "<br>Now Fill the Bottle before taking a second picture of the bottle<br>";
+                echo '<script>window.onload = function() {';
+                echo 'document.getElementById("bottle-label-empty").style.display = "none";';
+                echo 'document.getElementById("bottle-label-filled").style.display = "block";};';
+                echo '</script>';
                 takepic($savefilename, "AFTER");
             }
             elseif ($beforeorafter == "AFTER") {
@@ -468,26 +580,6 @@ echo '</head>';
         echo '</div>';
         echo '<div class="row images-section py-3">';
             echo '<div class="col-sm-12">';
-                echo '<button class="btn-scan-bottle" type="button">';
-            echo 'Scan Another Bottle at this Location';
-        echo '</button>';
-               echo '<div class="title mt-4">';
-                echo '<h1>Or</h1>';
-                echo '</div>';
-                echo '<button class="btn-scan-location mt-2" type="button">';
-                   echo '<img src="assets/images/location.png" class="me-2"><p>Tap NFC at New location</p>';
-                echo '</button>';
-                echo '<button class="btn-scan-save mt-4" type="button">';
-                    echo '<img src="assets/images/lab.png"  class="me-2"><span>Save and submit to Lab</span>';
-                echo '</button>';
-            echo '</div>';
-        echo '</div>';
-    echo '</div>';
-    echo '</div>';
-    echo '<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe" crossorigin="anonymous"></script>';
- echo '</body>';
-echo '</html>';
-
         if ($csvfilename != "") {
             $csvurl = "http://mmchugh.ie/iwater/sent/" . $csvfilename;
             $csvsavefilename = $sentpath .  $csvfilename;
@@ -501,11 +593,33 @@ echo '</html>';
         }
         else {
             $scriptname = basename($_SERVER["SCRIPT_FILENAME"]);
-            echo '<br><a href=' . $scriptname . '?LOCTAG=' . $loctag .  '>Scan Another Bottle at this Location</a><br><br>';
-            echo 'or<br>';
-            #This link, when clicked will call te page with no arguments which calls this function with a csvfilename
-            echo '<br><a href=' . $scriptname .  '>Save and Archive</a>';
+            echo '<a href="' . $scriptname . '?LOCTAG=' . $loctag .  '"> <button class="btn-scan-bottle" type="button">';
+            echo 'Scan Another Bottle at this Location';
+            echo '</button></a>';
+            echo '<div class="title mt-4">';
+            echo '<h1>Or</h1>';
+            echo '</div>';
+            echo '<a href="' . $scriptname . '?LOCTAG=' . $loctag .  '"><button class="btn-scan-location mt-2" type="button">';
+            echo '<img src="assets/images/location.png" class="me-2"><p>Tap NFC at New location</p>';
+            echo '</button></a>';
+            echo '<button class="btn-scan-save mt-4" type="button">';
+            echo '<img src="assets/images/lab.png"  class="me-2"><span>Save and submit to Lab</span>';
+            echo '</button>';
+
+//            echo '<br><a href=' . $scriptname . '?LOCTAG=' . $loctag .  '>Scan Another Bottle at this Location</a><br><br>';
+//            echo 'or<br>';
+//            #This link, when clicked will call te page with no arguments which calls this function with a csvfilename
+//            echo '<br><a href=' . $scriptname .  '>Save and Archive</a>';
         }
+
+            echo '</div>';
+        echo '</div>';
+    echo '</div>';
+    echo '</div>';
+    echo '<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe" crossorigin="anonymous"></script>';
+ echo '</body>';
+echo '</html>';
+
     }
     else {
         echo "<br>No Files to Download<br>";
@@ -523,8 +637,9 @@ function saveresult($basefilename, $picornot) {
 }
 
 function picproc($savefilename) {
-    echo "<br>Click the Camera icon to Take a Picture of the EMPTY bottle<br><br>";
+//    echo "<br>Click the Camera icon to Take a Picture of the EMPTY bottle<br><br>";
     takepic($savefilename, "BEFORE"); #  This then calls itself AFTER filing
+
 }
 
 function savefilenopic($savefilename) {

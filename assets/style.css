@@ -3,32 +3,45 @@
     min-height: 260px;
     background-color: #313e48;
 }
+.camera {
+    padding-top: 60px;
+}
+
+.camera h2 {
+    font-size: 16px;
+    text-align: center;
+    padding-bottom: 20px;
+}
 
 .header-reg {
     padding-bottom: 100px;
 }
 
+#selectedImage{
+    padding-top: 50px;
+}
+
 .success-header {
-	display: table;
+    display: table;
     background-color: #313e48;
-	height: 100vh;
+    height: 100vh;
 }
 
 .success-header h2 {
-	font-family: 'Roboto';
-	font-style: normal;
-	font-weight: 600;
-	font-size: 26px;
+    font-family: 'Roboto';
+    font-style: normal;
+    font-weight: 600;
+    font-size: 26px;
     color: #46B3B0;
 }
 
 .success-header p {
-	font-family: 'Roboto';
-font-style: normal;
-font-weight: 600;
-font-size: 20px;
-line-height: 200%;
-color: #fff;
+    font-family: 'Roboto';
+    font-style: normal;
+    font-weight: 600;
+    font-size: 20px;
+    line-height: 200%;
+    color: #fff;
 }
 
 .reg-logo img {
@@ -45,6 +58,7 @@ color: #fff;
     color: #ffffff;
     font-weight: 500;
     font-size: 13px;
+    padding-left: 5px;
 }
 .header .header-text2 {
     color: #cbd5d4;
@@ -229,8 +243,8 @@ input[type="checkbox"]::before {
 }
 
 .success-img {
-	width: 53%;
-	margin: auto;
+    width: 53%;
+    margin: auto;
 }
 
 
@@ -247,7 +261,8 @@ input[type="checkbox"]::before {
     font-weight: 500;
     font-size: 12px;
     color: #313E48;
-    font-family: 'Roboto';
+    padding-left: 5px;
+
 }
 .first-row .text2{
     font-weight: 400;
@@ -290,13 +305,13 @@ input[type="checkbox"]::before {
 
 .title {
     width:100%;
-    text-align:center; 
+    text-align:center;
     position: relative;
- }
- 
- .title h1 {
-    position:relative; 
-    padding:10px; 
+}
+
+.title h1 {
+    position:relative;
+    padding:10px;
     background: #fff;
     display: inline-block;
     z-index: 1;
@@ -304,11 +319,11 @@ input[type="checkbox"]::before {
     font-style: normal;
     font-weight: 600;
     font-size: 16px;
-     color: #46B3B0;
+    color: #46B3B0;
 
- }
- 
- .title::after {
+}
+
+.title::after {
     content:'';
     position: absolute;
     left: 0;
@@ -317,30 +332,30 @@ input[type="checkbox"]::before {
     height: 1px;
     background: #929E9D;
     z-index:0;
- }
+}
 
- .btn-scan-location{
+.btn-scan-location{
     width: 100%;
-border: none;
-background: #50687A;
-border-radius: 5px;
-color: #fff;
+    border: none;
+    background: #50687A;
+    border-radius: 5px;
+    color: #fff;
     padding: 7px 0px;
     display: flex;
     justify-content: center;
     align-items: center;
- }
+}
 
- .btn-scan-save{
+.btn-scan-save{
     width: 100%;
-border: none;
-background: #C7EEFF;
-border-radius: 5px;
-height: 45px;  
+    border: none;
+    background: #C7EEFF;
+    border-radius: 5px;
+    height: 45px;
     color: #1D475B;
- }
+}
 
- 
+
 .table thead th {
     background: #313E48;
     color: #fff;
@@ -351,21 +366,21 @@ height: 45px;
     text-align: center;
     color: #ACB7C0;
     padding: 12px 0px;
-  }
-  .client-id {
+}
+.client-id {
     border-radius: 10px 0px 0px 0px;
-  }
-  .scanned {
+}
+.scanned {
     border-radius: 0px 10px 0px 0px;
-  }
+}
 
 
 .table > tbody td {
-  font-style: normal;
-  font-weight: 400;
-  font-size: 12px;
-  text-align: center;
-  color: #313E48;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 12px;
+    text-align: center;
+    color: #313E48;
 }
 
 .btn-scan-bottle
@@ -375,27 +390,68 @@ height: 45px;
     background: #46B3B0;
     border-radius: 5px;
     font-family: 'Roboto';
-font-style: normal;
-font-weight: 500;
-font-size: 15px;
-color: #fff;
-  
+    font-style: normal;
+    font-weight: 500;
+    font-size: 15px;
+    color: #fff;
+
     padding: 11px 0px;
 }
 
 
 .btn-scan-location img {
-  position: relative;
+    position: relative;
 }
 .btn-scan-location p {
-  line-height: 0;
-  margin-top: 15px;
-  font-family: 'Roboto';
-  font-style: normal;
-  font-weight: 400;
-  font-size: 15px;
+    line-height: 0;
+    margin-top: 15px;
+    font-family: 'Roboto';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 15px;
 }
 
 .btn-scan-save img {
-	margin-top: -5px;
+    margin-top: -5px;
+}
+
+
+
+.upload {
+    position: absolute;
+    left: 50%;
+    top: 18%;
+    transform: translate(-50%, -50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.upload label {
+    cursor: pointer;
+}
+.upload label input {
+    display: none;
+}
+.upload label span {
+    position: relative;
+    width: 60px;
+    height: 60px;
+    border: 1px dashed;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.4s;
+}
+.upload label span i {
+    position: absolute;
+    font-size: 25px;
+}
+.upload label span:hover {
+    transform: scale(0.8);
+}
+
+.upload-img {
+    position: relative;
+    margin-top: 25px!important;
 }

@@ -1,7 +1,6 @@
 <?php
 include ('php_code/arf.php');
-?>
-
+if (isset($showRegisterForm) && $showRegisterForm){?>
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -28,7 +27,7 @@ include ('php_code/arf.php');
                 </div>
             </div>
 
-            <?php if (isset($showRegisterForm) && $showRegisterForm){?>
+
             <div class="row text-white reg-form">
                 <div class="col-sm-12">
                     <b>Registering Tag</b>
@@ -45,7 +44,8 @@ include ('php_code/arf.php');
                     </form>
                 </div>
             </div>
-            <?php  } ?>
         </div>
     </body>
 </html>
+<?php  } ?>
+

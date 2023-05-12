@@ -11,8 +11,7 @@ require("arffunctions.php");
 
 if (isset($_POST["uploadpic"])) { # Script was called from the upload form
     uploadpic();
-}
-else {
+} else {
     $loctag = $_GET["LOCTAG"];
     $clientreg = $_GET["CLIENTREG"];
     if ($loctag != "") {
@@ -27,30 +26,25 @@ else {
         $clientid = checkuser();
         if ($clientid == "") {
             echo "<br>Not a valid user - please contact iWater <br>";
-        }
-        else {
+        } else {
 //            echo "Client: " . $clientid;
             if ($location[0] == "NOT_REGISTERED") {
                 regtag($loctag);
-            }
-            else {
+            } else {
                 echo '<div id="scandit-barcode-picker"></div>';
 
                 logsample($loctag, $location, $clientid);
             }
         }
-    }
-    elseif ($clientreg != "") {
+    } elseif ($clientreg != "") {
         if ($clientreg == "DELETE") {
             echo "deleting user " . checkuser() . "<br>";
             deleteuser();
-        }
-        else {
+        } else {
             $confirmmessage = setuser($clientreg);
             echo $confirmmessage; //Muskan
         }
-    }
-    else {
+    } else {
         $clientid = checkuser();
         $datestamp = date("YmdHis");
         $csvfilename = $clientid . $datestamp . ".csv";
@@ -66,8 +60,8 @@ else {
     var imgBoxes = document.querySelectorAll('.img-box');
 
     // Add click event listeners to each img-box
-    imgBoxes.forEach(function(imgBox) {
-        imgBox.addEventListener("click", function() {
+    imgBoxes.forEach(function (imgBox) {
+        imgBox.addEventListener("click", function () {
             // Deselect the previously selected img-box, if any
             if (selectedImgBox !== null) {
                 selectedImgBox.style.backgroundColor = "";
@@ -98,7 +92,7 @@ else {
                 return ScanditSDK.BarcodePicker.create(document.getElementById("scandit-barcode-picker"), {
                     // enable some common symbologies
                     //  https://docs.scandit.com/4.5/web/enums/barcode.symbology.html  for full list
-                    scanSettings: new ScanditSDK.ScanSettings({ enabledSymbologies: ["pdf417", "qr", "code39", "data-matrix", "upce", "ean13"] }),
+                    scanSettings: new ScanditSDK.ScanSettings({enabledSymbologies: ["pdf417", "qr", "code39", "data-matrix", "upce", "ean13"]}),
                 });
                 device1 = ScanditSDK.ScanSettings.getDeviceName();
                 alert(device1);
@@ -141,14 +135,24 @@ else {
 
     function cameraclick() {
         document.getElementById('takepic').click();
-        document.getElementById('cameraicon').style.display = "none";
         document.getElementById('uploadicon').style.display = "block";
+    }
+
+    function onSelectImg() {
+        var fileInput = document.getElementById("takepic");
+        var selectedFile = fileInput.files[0];
+        console.log(selectedFile, "selected file");
+        var selectedImage = document.getElementById("selectedImage");
+        selectedImage.src = window.URL.createObjectURL(selectedFile);
+        selectedImage.style.display = "block"
+        console.log(selectedImage.src);
     }
 
     function uploadclick() {
         document.getElementById('takepic').click();
         document.getElementById('cameraicon').style.display = "block";
         document.getElementById('uploadicon').style.display = "none";
+
     }
 
 
