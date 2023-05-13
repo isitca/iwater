@@ -14,37 +14,37 @@ if (isset($showRegisterForm) && $showRegisterForm){?>
 
     </head>
     <body>
-        <div class="container header header-reg">
-            <div class="row">
-                <div class="col-sm-12 reg-logo text-center mt-5">
-                    <img src="assets/images/reg-logo.png" class="mt-5" />
-                </div>
-                <div class="col-sm-12 text-center mt-5">
-                    <div class="mx-4 mt-4">
-                        <img src="assets/images/icons/Client_icon.png" />
-                        <span class="header-text1">Client: </span> <span class="header-text2"><?php echo $_COOKIE["clientid"]; ?></span>
-                    </div>
-                </div>
-            </div>
+           <div class="container header header-reg">
+               <div class="row">
+                   <div class="col-sm-12 reg-logo text-center mt-5">
+                       <img src="assets/images/reg-logo.png" class="mt-5" />
+                   </div>
+                   <div class="col-sm-12 text-center mt-5">
+                       <div class="mx-4 mt-4">
+                           <img src="assets/images/icons/Client_icon.png" />
+                           <span class="header-text1">Client: </span> <span class="header-text2"><?php echo $_COOKIE["clientid"]; ?></span>
+                       </div>
+                   </div>
+               </div>
 
 
-            <div class="row text-white reg-form">
-                <div class="col-sm-12">
-                    <b>Registering Tag</b>
-                    <form action="index.php" method="get">
-                        <input type="text" name="LOCTAG" placeholder="cust11_room444" readonly value="<?php echo $_COOKIE['loctag']?>" id="LOCTAG" />
-                        <b>Location Name</b>
-                        <input type="text" name="LOCNAME"  id="LOCNAME" autofocus />
-                        <label class="checkbox mt-3">
-                            Include Photo
-                            <input name="WITHPIC" id="WITHPIC" value="withpic"  type="checkbox" checked="checked" />
-                            <span class="checkmark"></span>
-                        </label>
-                        <button class="reg-btn mt-5" type="submit">Register This Tag</button>
-                    </form>
-                </div>
-            </div>
-        </div>
+               <div class="row text-white reg-form">
+                   <div class="col-sm-12">
+                       <b>Registering Tag</b>
+                       <form action="index.php" method="get">
+                           <input type="text" name="LOCTAG" placeholder="cust11_room444" readonly value="<?php echo $_COOKIE['loctag']?>" id="LOCTAG" />
+                           <b>Location Name</b>
+                           <input type="text" name="LOCNAME"  id="LOCNAME" autofocus />
+                           <label class="checkbox mt-3">
+                               Include Photo
+                               <input name="WITHPIC" id="WITHPIC" value="withpic"  type="checkbox" checked="checked" />
+                               <span class="checkmark"></span>
+                           </label>
+                           <button class="reg-btn mt-5" type="submit">Register This Tag</button>
+                       </form>
+                   </div>
+               </div>
+           </div>
     </body>
 </html>
 <?php  } ?>

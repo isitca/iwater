@@ -3,6 +3,7 @@ $datapath = "data/iwater/";
 $cookiename = 'clientid';
 $userexpire = mktime(0, 0, 0, 4, 4, 2024);  # Apr 2024 - scandit renewal time - need to update clients then
 $loctag = "loctag";
+$locname= "locname";
 $showRegisterForm = false;
 
 function checkuser() {
@@ -79,7 +80,37 @@ function regtag($tagnum) {
         // nopic is the default - change to withpic if preferred
         fwrite($tagfile, $locname);
         fclose($tagfile);
-        echo "<br>" . $tagnum . " Registered: " . $locname; //Muskan
+//        echo "<br>" . $tagnum . " Registered: " . $locname; //Muskan
+echo '<html lang="en">';
+   echo '<head>';
+       echo '<meta charset="utf-8" />';
+       echo '<meta name="viewport" content="width=device-width, initial-scale=1" />';
+       echo '<title>iWater</title>';
+      echo '<link href="assets/style.css" rel="stylesheet" />';
+        echo '<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous" />';
+       echo '<link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet" />';
+   echo '</head>';
+   echo '<body>';
+       echo '<div class="container success-header">';
+          echo '<div class="row">';
+               echo '<div class="col-sm-12 logo">';
+                   echo '<img src="assets/images/logo.png" />';
+               echo '</div>';
+               echo '<div class="col-sm-12 text-center mt-5 pt-5">';
+                   echo '<h2>Congratulations</h2>';
+                    echo '<p class="mt-3">';
+       echo 'You are successfully registered!';
+                   echo '</p>';
+                   echo '<img src="assets/images/congradulations.png" class="success-img mt-5"  alt="congradulations">';
+               echo '</div>';
+           echo '</div>';
+       echo '</div>';
+
+      echo  '<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe" crossorigin="anonymous"></script>';
+   echo '</body>';
+echo '</html>';
+        setcookie('locname', $locname);
+        $_COOKIE['locname'] = $locname;
     }
     else {
         # Display the form to capture Location Name
@@ -90,6 +121,8 @@ function regtag($tagnum) {
 //        echo 'Include Photos: <input type="checkbox" name="WITHPIC" id="WITHPIC" value="withpic" style="height:70px; width:90px; border-width:4px"><br>';
 //        echo "<input type=\"submit\" name=\"submit\" value=\"Register this tag\"><br></form>";
         setcookie('loctag', $tagnum);
+        $_COOKIE['loctag'] = $tagnum;
+
         $showRegisterForm = true;
     }
 }
@@ -196,7 +229,7 @@ function scanbottle($tagnum, $withpicchecked) {
           echo '<div class="mx-4 first-row my-3">';
           echo '<img src="assets/images/icons/Location_icon.png">';
           echo '<span class="text1">Location: </span>';
-          echo '<span class="text2">1194 Summit Park Avenue, Spearville, United States</span>';
+          echo "<span class='text2'>{$_COOKIE['locname']}</span>";
           echo '</div>';
           echo '</div>';
           echo '<div class="col-sm-12">';
@@ -321,9 +354,9 @@ echo '<div class="container footer">';
            echo '<div class="mx-4 first-row my-3">';
               echo '<img src="assets/images/icons/Location_icon.png">';
                echo '<span class="text1">Location: </span>';
-                echo '<span class="text2">1194 Summit Park Avenue, Spearville,
-                        United States</span>';
-           echo '</div>';
+    echo "<span class='text2'>{$_COOKIE['locname']}</span>";
+
+    echo '</div>';
       echo '</div>';
    echo '</div>';
     echo '<form action="" method="post" enctype="multipart/form-data">';
@@ -565,9 +598,8 @@ echo '</head>';
                 echo '<div class="mx-4 first-row my-3 ">';
                    echo '<img src="assets/images/icons/Location_icon.png">';
                    echo '<span class="text1">Location: </span>';
-                   echo ' <span class="text2">1194 Summit Park Avenue, Spearville,
-                        United States</span>';
-               echo '</div>';
+        echo "<span class='text2'>{$_COOKIE['locname']}</span>";
+        echo '</div>';
            echo '</div>';
         echo '</div>';
         echo '<div class="row images-section">';
