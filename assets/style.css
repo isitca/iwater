@@ -55,6 +55,9 @@
     padding: 20px 0px 20px 0px;
     border: 1px solid rgba(0, 0, 0, 0.14);
 }
+.logo img{
+    width: 157px;
+}
 .header .header-text1 {
     color: #ffffff;
     font-weight: 500;
@@ -257,6 +260,7 @@ input[type="checkbox"]::before {
     position: absolute;
     left: 0px;
     top: 220px;
+    /*height: 100%;*/
 }
 .first-row .text1{
     font-weight: 500;
@@ -414,7 +418,13 @@ input[type="checkbox"]::before {
 .btn-scan-save img {
     margin-top: -5px;
 }
-
+.upload-picture-btn{
+    padding-top: 110px;
+    padding-bottom: 30px;
+}
+#uploadicon{
+    border: none;
+}
 
 
 .upload {
@@ -434,8 +444,8 @@ input[type="checkbox"]::before {
 }
 .upload label span {
     position: relative;
-    width: 60px;
-    height: 60px;
+    width: 100px;
+    height: 100px;
     border: 1px dashed;
     border-radius: 50%;
     display: flex;
@@ -445,7 +455,7 @@ input[type="checkbox"]::before {
 }
 .upload label span i {
     position: absolute;
-    font-size: 25px;
+    font-size: 50px;
 }
 .upload label span:hover {
     transform: scale(0.8);

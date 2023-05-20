@@ -135,7 +135,6 @@ if (isset($_POST["uploadpic"])) { # Script was called from the upload form
 
     function cameraclick() {
         document.getElementById('takepic').click();
-        document.getElementById('uploadicon').style.display = "block";
     }
 
     function onSelectImg() {
@@ -151,7 +150,6 @@ if (isset($_POST["uploadpic"])) { # Script was called from the upload form
     function uploadclick() {
         document.getElementById('takepic').click();
         document.getElementById('cameraicon').style.display = "block";
-        document.getElementById('uploadicon').style.display = "none";
 
     }
 

@@ -1,5 +1,5 @@
 <?php
-$datapath = "data/iwater/";
+$datapath = "../../data/iwater/";
 $cookiename = 'clientid';
 $userexpire = mktime(0, 0, 0, 4, 4, 2024);  # Apr 2024 - scandit renewal time - need to update clients then
 $loctag = "loctag";
@@ -216,7 +216,7 @@ function scanbottle($tagnum, $withpicchecked) {
           echo '<div class="icon-text mx-3 d-flex">';
           echo '<label class="checkbox">';
           echo '<p class="text-heading">Include Photo</p>';
-          echo '<input name="WITHPIC" id="WITHPIC" value="withpic"  type="checkbox" checked="checked" />';
+          echo '<input name="WITHPIC" id="WITHPIC" value="withpic"  type="checkbox" checked="checked" ' . $withpicchecked .'/>';
           echo '<span class="checkmark"></span>';
           echo '</label>';
           echo '</div>';
@@ -232,31 +232,8 @@ function scanbottle($tagnum, $withpicchecked) {
           echo "<span class='text2'>{$_COOKIE['locname']}</span>";
           echo '</div>';
           echo '</div>';
-          echo '<div class="col-sm-12">';
-          echo '<div class="mx-4 first-row my-3 ">';
-          echo '<img src="assets/images/icons/Bottle icon.png">';
-          echo '<span class="text1">Select Bottle and Fill </span>';
-          echo '</div>';
-          echo '</div>';
           echo '</div>';
           echo '<div class="row images-section">';
-          echo '<div class="col">';
-          echo '<div class="col img-box" id="img-box1">';
-          echo '<img id="myImage" src="assets/images/bottle_1 3.png">';
-          echo '</div>';
-          echo '</div>';
-          echo '<div class="col">';
-          echo '<div class="col img-box" id="img-box2">';
-          echo '<img id="myImage" src="assets/images/bottle_2 3.png">';
-          echo '</div>';
-          echo '</div>';
-          echo '<div class="col">';
-          echo '<div class="col img-box" id="img-box2">';
-          echo '<img id="myImage" src="assets/images/bottle_3 1.png">';
-          echo '</div>';
-          echo '</div>';
-          echo '</div>';
-          echo '<div class="row images-section py-5">';
           echo '<div class="col-sm-12">';
           echo '<div class="col-sm-12 img-box1">';
           echo '<img src="assets/images/Rectangle 21.png">';
@@ -269,7 +246,7 @@ function scanbottle($tagnum, $withpicchecked) {
           echo '<input type="submit"  name="savebutton" id="savebutton" style="display:none; background: url(saveicon.png) no-repeat; height: 700px; width: 500px;" >';
           echo '<div id="scandit-barcode-picker"></div>';
           echo '<div id="scanicon" align="center">';
-          echo '<div class="col-sm-12 pt-4">';
+          echo '<div class="col-sm-12 py-4">';
           echo '<button onclick="scannerstuff()" class="btn-scan" type="button">';
           echo '<span>Tap to Scan Bottle</span>';
           echo '</button>';
@@ -373,12 +350,8 @@ echo '<div class="container footer">';
              echo '</span>';
     echo '</label>';
            echo '</div>';
-           echo '<div class="mt-5 d-flex justify-content-center">';
-    echo '<img src="" id="selectedImage" height="100px;" width="100px" style="display: none">';
-
-           echo '</div>';
-           echo '<div class="mx-5 pt-5">';
-    echo '<input type="submit" value="Upload Picture" name="uploadpic" id="uploadicon" style="display: none">';
+           echo '<div class="mx-5 upload-picture-btn">';
+    echo '<input type="submit" value="Upload Picture" name="uploadpic" id="uploadicon">';
     echo "<input type=\"text\" id=\"savefilename\" name=\"savefilename\" value=\"$picfilename\" hidden >";
     echo "<input type=\"text\" id=\"beforeorafter\" name=\"beforeorafter\" value=\"$beforeorafter\" hidden >";
     echo '</div>';
@@ -612,7 +585,7 @@ echo '</head>';
         echo '</div>';
         echo '<div class="row images-section py-3">';
             echo '<div class="col-sm-12">';
-        if ($csvfilename != "") {
+        if ($csvfilename) {
             $csvurl = "http://mmchugh.ie/iwater/sent/" . $csvfilename;
             $csvsavefilename = $sentpath .  $csvfilename;
             $csvsavefile = fopen($csvsavefilename, "w") or die("Unable to save CSV File" . $csvsavefilename);
@@ -621,7 +594,10 @@ echo '</head>';
             $myfiletable = $myfiletable . '<br><a href=' . $csvurl . '>Download or view CSV file ' . $csvurl . '</a><br>';
             $htmlheader = '<html><head></head><body>';
             $htmlfooter = '</body></html>';
-            echo "<br><a href=\"mailto:maurice@mmchugh.ie?subject=samples&body=" . $htmlheader . $myfiletable . $htmlfooter . "\">Mail this </a>";
+            echo "<a href=\"mailto:maurice@mmchugh.ie?subject=samples&body=" . $htmlheader . $myfiletable . $htmlfooter . "\">";
+            echo "<button class='btn-scan-bottle mb-4' type='button'>";
+            echo 'Mail this';
+            echo '</button></a>';
         }
         else {
             $scriptname = basename($_SERVER["SCRIPT_FILENAME"]);
@@ -634,14 +610,9 @@ echo '</head>';
             echo '<a href="' . $scriptname . '?LOCTAG=' . $loctag .  '"><button class="btn-scan-location mt-2" type="button">';
             echo '<img src="assets/images/location.png" class="me-2"><p>Tap NFC at New location</p>';
             echo '</button></a>';
-            echo '<button class="btn-scan-save mt-4" type="button">';
+            echo '<a href=' . $scriptname .  '><button class="btn-scan-save mt-4" type="button">';
             echo '<img src="assets/images/lab.png"  class="me-2"><span>Save and submit to Lab</span>';
-            echo '</button>';
-
-//            echo '<br><a href=' . $scriptname . '?LOCTAG=' . $loctag .  '>Scan Another Bottle at this Location</a><br><br>';
-//            echo 'or<br>';
-//            #This link, when clicked will call te page with no arguments which calls this function with a csvfilename
-//            echo '<br><a href=' . $scriptname .  '>Save and Archive</a>';
+            echo '</button></a>';
         }
 
             echo '</div>';

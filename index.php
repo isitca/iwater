@@ -17,7 +17,7 @@ if (isset($showRegisterForm) && $showRegisterForm){?>
            <div class="container header header-reg">
                <div class="row">
                    <div class="col-sm-12 reg-logo text-center mt-5">
-                       <img src="assets/images/reg-logo.png" class="mt-5" />
+                       <img src="assets/images/logo.png" class="mt-5" />
                    </div>
                    <div class="col-sm-12 text-center mt-5">
                        <div class="mx-4 mt-4">
@@ -37,7 +37,7 @@ if (isset($showRegisterForm) && $showRegisterForm){?>
                            <input type="text" name="LOCNAME"  id="LOCNAME" autofocus />
                            <label class="checkbox mt-3">
                                Include Photo
-                               <input name="WITHPIC" id="WITHPIC" value="withpic"  type="checkbox" checked="checked" />
+                               <input name="WITHPIC" id="WITHPIC" value="withpic"  type="checkbox" />
                                <span class="checkmark"></span>
                            </label>
                            <button class="reg-btn mt-5" type="submit">Register This Tag</button>
