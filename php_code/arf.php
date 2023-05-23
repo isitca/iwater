@@ -12,8 +12,9 @@ require("arffunctions.php");
 if (isset($_POST["uploadpic"])) { # Script was called from the upload form
     uploadpic();
 } else {
-    $loctag = $_GET["LOCTAG"];
-    $clientreg = $_GET["CLIENTREG"];
+   // $loctag = $_GET["LOCTAG"];
+    $loctag = isset($_GET['LOCTAG']) ? $_GET['LOCTAG'] : null;
+    $clientreg = isset($_GET['CLIENTREG']) ? $_GET['CLIENTREG'] : null;
     if ($loctag != "") {
         $location = checktag($loctag);
         # $location[0] should be:
