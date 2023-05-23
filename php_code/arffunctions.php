@@ -1,9 +1,12 @@
 <?php
-$datapath = "../../data/iwater/";
+//$datapath = "../../data/iwater/";
+$datapath = "data/iwater/";
 $cookiename = 'clientid';
 $userexpire = mktime(0, 0, 0, 4, 4, 2024);  # Apr 2024 - scandit renewal time - need to update clients then
 $loctag = "loctag";
 $locname= "locname";
+
+
 $showRegisterForm = false;
 
 function checkuser() {
@@ -69,10 +72,10 @@ function regtag($tagnum) {
     $scriptname = basename($_SERVER["SCRIPT_FILENAME"]);
 # show a form displaying tagnum and asking for location description - typed or from list
 
-    $locname = $_GET["LOCNAME"]; #  This gets filled by the form and appears on resubmit
+    $locname = isset($_GET['LOCNAME']) ? $_GET['LOCNAME'] : null; #  This gets filled by the form and appears on resubmit
     # second time around it writes the tag file
     if ($locname) {
-        $picornot = $_GET["WITHPIC"];
+        $picornot = isset($_GET['WITHPIC']) ? $_GET['WITHPIC'] : null;
         if ($picornot != "withpic") {
             $picornot = "nopic";
         }
@@ -172,7 +175,7 @@ function logsample($tagnum, $location, $clientid) {
 
 function scanbottle($tagnum, $withpicchecked) {
     $scriptname = basename($_SERVER["SCRIPT_FILENAME"]);
-    $bottletag = $_GET["BOTTLETAG"]; # Filled by the previous cycle
+    $bottletag = isset($_GET['BOTTLETAG']) ? $_GET['BOTTLETAG'] : null; # Filled by the previous cycle
     if ($bottletag) {
         return($bottletag);
     }
@@ -186,8 +189,8 @@ function scanbottle($tagnum, $withpicchecked) {
           echo '<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">';
           echo '</head>';
           echo '<body>';
-          echo '<form>';
-          echo '<div class="container header" id="header">';
+          echo '<form class="custom-form">';
+          echo '<div class="container header header-custom" id="header">';
           echo '<div class="row">';
           echo '<div class="col-sm-12 logo">';
           echo '<img src="assets/images/logo.png"/>';
@@ -200,7 +203,7 @@ function scanbottle($tagnum, $withpicchecked) {
           echo '</div>';
           echo '</div>';
           echo '<div class="row head">';
-          echo '<div class="col py-3 d-flex justify-content-center">';
+          echo '<div class="col py-3 d-flex">';
           echo '<div class="bg-icon mx-3">';
           echo '<img src="assets/images/icons/lab_icon.png">';
           echo '</div>';
@@ -223,7 +226,7 @@ function scanbottle($tagnum, $withpicchecked) {
           echo '</div>';
           echo '</div>';
           echo '</div>';
-          echo '<div class="container footer" id="footer">';
+          echo '<div class="container middle" id="footer">';
           echo '<div class="row">';
           echo '<div class="col-sm-12">';
           echo '<div class="mx-4 first-row my-3">';
@@ -245,13 +248,13 @@ function scanbottle($tagnum, $withpicchecked) {
           echo '<input type="hidden" id="LOCDATE" name="LOCDATE" value="' . $startdate . '">';
           echo '<input type="submit"  name="savebutton" id="savebutton" style="display:none; background: url(saveicon.png) no-repeat; height: 700px; width: 500px;" >';
           echo '<div id="scandit-barcode-picker"></div>';
+          echo '</div>';
+          echo '</div>';
           echo '<div id="scanicon" align="center">';
           echo '<div class="col-sm-12 py-4">';
           echo '<button onclick="scannerstuff()" class="btn-scan" type="button">';
           echo '<span>Tap to Scan Bottle</span>';
           echo '</button>';
-          echo '</div>';
-          echo '</div>';
           echo '</div>';
           echo '</div>';
           echo '</form>';
