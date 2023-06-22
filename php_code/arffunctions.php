@@ -1,5 +1,6 @@
 <?php
 $datapath = "../../data/iwater/";
+$datapath = "data/iwater/";
 $cookiename = 'clientid';
 $userexpire = mktime(0, 0, 0, 4, 4, 2024);  # Apr 2024 - scandit renewal time - need to update clients then
 $loctag = "loctag";
@@ -149,8 +150,8 @@ function regtag($tagnum) {
 //        echo "<br>Location Name<br><input type = \"text\" name=\"LOCNAME\" id=\"LOCNAME\" autofocus><br>";
 //        echo 'Include Photos: <input type="checkbox" name="WITHPIC" id="WITHPIC" value="withpic" style="height:70px; width:90px; border-width:4px"><br>';
 //        echo "<input type=\"submit\" name=\"submit\" value=\"Register this tag\"><br></form>";
-       # setcookie('loctag', $tagnum);
-       # $_COOKIE['loctag'] = $tagnum;
+        #setcookie('loctag', $tagnum);
+        #$_COOKIE['loctag'] = $tagnum;
 
         $showRegisterForm = true;
     }
@@ -159,7 +160,7 @@ function regtag($tagnum) {
 function logsample($tagnum, $location, $clientid) {
     global $datapath, $locdate;
     echo '<div id="hideatend">';
-//    echo "Location:<br> $location[1] <br>"; //MUSKAN
+//    echo "Location:<br> $location[1] <br>"; //
     $withpicchecked = "";
     if ($location[0] == "withpic") {
         $withpicchecked = " checked ";
@@ -203,7 +204,7 @@ function scanbottle($tagnum, $withpicchecked) {
     $location = checktag($tagnum);
 	$locname = $location[1];
 	$scriptname = basename($_SERVER["SCRIPT_FILENAME"]);
-    $bottletag = $_GET["BOTTLETAG"]; # Filled by the previous cycle
+    $bottletag = isset($_GET['BOTTLETAG']) ? $_GET['BOTTLETAG'] : null; # Filled by the previous cycle
     if ($bottletag) {
         return($bottletag);
     }
@@ -223,24 +224,31 @@ function scanbottle($tagnum, $withpicchecked) {
           echo '<div class="col-sm-12 logo">';
           echo '<img src="assets/images/logo.png"/>';
           echo '</div>';
-          echo '<div class="col-sm-12">';
-          echo '<div  class="mx-4 my-3">';
-          echo '<img src="assets/images/icons/Client_icon.png">';
-          echo "<span class='header-text1'>Client: </span> <span class='header-text2'>{$_COOKIE['clientid']}</span>";
-          echo '</div>';
-          echo '</div>';
-          echo '</div>';
-          echo '<div class="row head">';
-          echo '<div class="col py-3 d-flex justify-content-center">';
-          echo '<div class="bg-icon mx-3">';
-          echo '<img src="assets/images/icons/lab_icon.png">';
-          echo '</div>';
+          echo '<div class="col-lg-12">';
+          echo '<div class="row">';
+          echo '<div class="col-5 my-3 mx-3">';
           echo '<div class="icon-text">';
           echo '<p class="text-heading">iLabLocation ID:</p>';
           echo "<p class='text-paragraph'>{$tagnum}</p>";
           echo '</div>';
           echo '</div>';
-          echo '<div class="col py-3 d-flex justify-content-start">';
+          echo '<div  class="col-3 my-3 ps-3">';
+          echo '<img src="assets/images/icons/Client_icon.png">';
+          echo "<span class='header-text1'>Client: </span> <span class='header-text2'>{$_COOKIE['clientid']}</span>";
+          echo '</div>';
+          echo '</div>';
+          echo '</div>';
+          echo '</div>';
+          echo '<div class="row head">';
+          echo '<div class="col pt-0 d-flex justify-content-center">';
+          echo '<div class="mt-2 mx-3">';
+          echo '<p class="text-heading">Room</p>';
+          echo '</div>';
+          echo '<div class="icon-text">';
+          echo "<p class='text-paragraph'><input type='text' style='background: #fff;'></p>";
+          echo '</div>';
+          echo '</div>';
+          echo '<div class="col pt-0 d-flex justify-content-start">';
           echo '<div class="bg-icon">';
           echo '<img src="assets/images/icons/photo_icon.png">';
           echo '</div>';
