@@ -1,6 +1,5 @@
 <?php
 $datapath = "../../data/iwater/";
-$datapath = "data/iwater/";
 $cookiename = 'clientid';
 $userexpire = mktime(0, 0, 0, 4, 4, 2024); # Apr 2024 - scandit renewal time - need to update clients then
 $loctag = "loctag";
