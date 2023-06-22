@@ -4,8 +4,6 @@ $cookiename = 'clientid';
 $userexpire = mktime(0, 0, 0, 4, 4, 2024);  # Apr 2024 - scandit renewal time - need to update clients then
 $loctag = "loctag";
 $locname= "locname";
-
-
 $showRegisterForm = false;
 
 function checkuser() {
@@ -14,24 +12,49 @@ function checkuser() {
         return($_COOKIE[$cookiename]);
     }
     else {
-        return("");
+        #return("");
         # Temp workaround for cookie issue
-        # return("Unregistered_User");
+        return("UnregisteredUser");
     }
 }
 
 function setuser($clientid) {
     global $cookiename, $datapath, $userexpire;
-    $fullfilename = $datapath . "clients/" . $clientid;
+    $pendingfilename = $datapath . "clients/pending/" . $clientid;
+    $registeredfilename = $datapath . "clients/registered/" . $clientid;
+    $confirmredfilename = $datapath . "clients/confirmed/" . $clientid;
     #test skip file check to allow rereg
-    #if (file_exists($fullfilename)) {
-    setcookie($cookiename, $clientid, $userexpire, '/');
-    $result = "New Client device confirmed: " . $clientid;
-    #	unlink($fullfilename);
-    #}
-    #else {
-    #	$result = "Client name NOT approved";
-    #}
+    if (file_exists($pendingfilename)) { # new client created not yet registered
+		setcookie($cookiename, $clientid, $userexpire, '/');
+    	rename($pendingfilename, $registeredfilename);
+		$result = "Client Device Registered: " . $clientid;
+		$result2 =  " Now Tap your Registration Tag once more to verify";
+		showscreen($result, $result2);
+    }
+    elseif (file_exists($registeredfilename)) { # new client registered, not confirmed
+		if (checkuser() == $clientid) {  # Got cookie so we can confirm
+			rename($registeredfilename, $confirmredfilename);
+			$result = "New Client device confirmed: " . $clientid;
+			showscreen($result);
+		}
+		else {
+			$result = "New Client device registered but not confirmed: " . $clientid;
+			$result2 = "Possible problem with Cookies";
+			showscreen($result, $result2);
+		}
+		#If this step fails, then probably an issue with cookies so we can allow password logon instead
+	}
+    elseif (file_exists($confirmredfilename)) { # new client already confirmed
+		$result = "New Client device already confirmed: " . $clientid;
+		$currentid = checkuser();
+		if ($currentid != $clientid){
+			$result2 =  "  -  BUT possible problem with cookie or ID already registered on another device";
+		}
+		showscreen($result, $result2);
+	}
+    else {
+    	$result = "Client name NOT approved";
+    }
     return($result);
 }
 
@@ -41,10 +64,42 @@ function deleteuser() {
     setcookie($cookiename, "", time() - 3600);
 }
 
+function showscreen($result = "", $result2 = "") {
+				echo '<html lang="en">';
+			   echo '<head>';
+				   echo '<meta charset="utf-8" />';
+				   echo '<meta name="viewport" content="width=device-width, initial-scale=1" />';
+				   echo '<title>iWater</title>';
+				  echo '<link href="assets/style.css" rel="stylesheet" />';
+					echo '<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous" />';
+				   echo '<link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet" />';
+			   echo '</head>';
+			   echo '<body>';
+					   echo '<div class="container success-header">';
+						  echo '<div class="row">';
+							   echo '<div class="col-sm-12 logo">';
+								   echo '<img src="assets/images/logo.png" />';
+							   echo '</div>';
+							   echo '<div class="col-sm-12 text-center mt-5 pt-5">';
+								   echo '<h2>';
+								   echo $result;
+								   echo '</h2>';
+									echo '<p class="mt-3">';
+									echo $result2;
+								   echo '</p>';
+								   echo '<img src="assets/images/congradulations.png" class="success-img mt-5"  alt="congradulations">';
+							   echo '</div>';
+						   echo '</div>';
+				   echo '</div>';
+			   echo '</body>';
+			echo '</html>';
+}
+
+
 function checktag($tagnum) {
     #search for file
     global $datapath;
-    $filesearch = $datapath . "tags/" . $tagnum . ".*";
+    $filesearch = $datapath . "tags/" . $tagnum . "*";
     $tagfiles = glob($filesearch);
     if (!empty($tagfiles)) {
         # We only care about the first file found - should not be any duplicates
@@ -71,10 +126,10 @@ function regtag($tagnum) {
     $scriptname = basename($_SERVER["SCRIPT_FILENAME"]);
 # show a form displaying tagnum and asking for location description - typed or from list
 
-    $locname = isset($_GET['LOCNAME']) ? $_GET['LOCNAME'] : null; #  This gets filled by the form and appears on resubmit
+    $locname = $_GET["LOCNAME"]; #  This gets filled by the form and appears on resubmit
     # second time around it writes the tag file
     if ($locname) {
-        $picornot = isset($_GET['WITHPIC']) ? $_GET['WITHPIC'] : null;
+        $picornot = $_GET["WITHPIC"];
         if ($picornot != "withpic") {
             $picornot = "nopic";
         }
@@ -82,37 +137,9 @@ function regtag($tagnum) {
         // nopic is the default - change to withpic if preferred
         fwrite($tagfile, $locname);
         fclose($tagfile);
-//        echo "<br>" . $tagnum . " Registered: " . $locname; //Muskan
-echo '<html lang="en">';
-   echo '<head>';
-       echo '<meta charset="utf-8" />';
-       echo '<meta name="viewport" content="width=device-width, initial-scale=1" />';
-       echo '<title>iWater</title>';
-      echo '<link href="assets/style.css" rel="stylesheet" />';
-        echo '<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous" />';
-       echo '<link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet" />';
-   echo '</head>';
-   echo '<body>';
-       echo '<div class="container success-header">';
-          echo '<div class="row">';
-               echo '<div class="col-sm-12 logo">';
-                   echo '<img src="assets/images/logo.png" />';
-               echo '</div>';
-               echo '<div class="col-sm-12 text-center mt-5 pt-5">';
-                   echo '<h2>Congratulations</h2>';
-                    echo '<p class="mt-3">';
-       echo 'You are successfully registered!';
-                   echo '</p>';
-                   echo '<img src="assets/images/congradulations.png" class="success-img mt-5"  alt="congradulations">';
-               echo '</div>';
-           echo '</div>';
-       echo '</div>';
-
-      echo  '<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe" crossorigin="anonymous"></script>';
-   echo '</body>';
-echo '</html>';
-        setcookie('locname', $locname);
-        $_COOKIE['locname'] = $locname;
+        $result = "Location Tag: " . $tagnum . "<br>Successfully Registered";
+		$result2 =  $locname;
+		showscreen($result, $result2);
     }
     else {
         # Display the form to capture Location Name
@@ -122,8 +149,8 @@ echo '</html>';
 //        echo "<br>Location Name<br><input type = \"text\" name=\"LOCNAME\" id=\"LOCNAME\" autofocus><br>";
 //        echo 'Include Photos: <input type="checkbox" name="WITHPIC" id="WITHPIC" value="withpic" style="height:70px; width:90px; border-width:4px"><br>';
 //        echo "<input type=\"submit\" name=\"submit\" value=\"Register this tag\"><br></form>";
-        setcookie('loctag', $tagnum);
-        $_COOKIE['loctag'] = $tagnum;
+       # setcookie('loctag', $tagnum);
+       # $_COOKIE['loctag'] = $tagnum;
 
         $showRegisterForm = true;
     }
@@ -140,7 +167,7 @@ function logsample($tagnum, $location, $clientid) {
 
     $bottletag = scanbottle($tagnum, $withpicchecked); # $location[0] = withpic or nopic from filename to default the checkbox
     $bottletag = preg_replace( '/[\W]/', '', $bottletag);
-    $bottletag = substr($bottletag, 0, 10); //these 2 lines allow testing with any barcode by filtering and chopping
+    #$bottletag = substr($bottletag, 0, 10); //these 2 lines allow testing with any barcode by filtering and chopping
     echo '</div>'; #End of hideatend
     #scannerstuff();
     if ($bottletag) {
@@ -173,8 +200,10 @@ function logsample($tagnum, $location, $clientid) {
 
 
 function scanbottle($tagnum, $withpicchecked) {
-    $scriptname = basename($_SERVER["SCRIPT_FILENAME"]);
-    $bottletag = isset($_GET['BOTTLETAG']) ? $_GET['BOTTLETAG'] : null; # Filled by the previous cycle
+    $location = checktag($tagnum);
+	$locname = $location[1];
+	$scriptname = basename($_SERVER["SCRIPT_FILENAME"]);
+    $bottletag = $_GET["BOTTLETAG"]; # Filled by the previous cycle
     if ($bottletag) {
         return($bottletag);
     }
@@ -188,8 +217,8 @@ function scanbottle($tagnum, $withpicchecked) {
           echo '<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">';
           echo '</head>';
           echo '<body>';
-          echo '<form class="custom-form">';
-          echo '<div class="container header header-custom" id="header">';
+
+          echo '<div class="container header" id="header">';
           echo '<div class="row">';
           echo '<div class="col-sm-12 logo">';
           echo '<img src="assets/images/logo.png"/>';
@@ -202,7 +231,7 @@ function scanbottle($tagnum, $withpicchecked) {
           echo '</div>';
           echo '</div>';
           echo '<div class="row head">';
-          echo '<div class="col py-3 d-flex">';
+          echo '<div class="col py-3 d-flex justify-content-center">';
           echo '<div class="bg-icon mx-3">';
           echo '<img src="assets/images/icons/lab_icon.png">';
           echo '</div>';
@@ -218,20 +247,20 @@ function scanbottle($tagnum, $withpicchecked) {
           echo '<div class="icon-text mx-3 d-flex">';
           echo '<label class="checkbox">';
           echo '<p class="text-heading">Include Photo</p>';
-          echo '<input name="WITHPIC" id="WITHPIC" value="withpic"  type="checkbox" checked="checked" ' . $withpicchecked .'/>';
+          echo '<input name="WITHPIC" id="WITHPIC" value="withpic"  type="checkbox" ' . $withpicchecked .'/>';
           echo '<span class="checkmark"></span>';
           echo '</label>';
           echo '</div>';
           echo '</div>';
           echo '</div>';
           echo '</div>';
-          echo '<div class="container middle" id="footer">';
+          echo '<div class="container footer" id="footer">';
           echo '<div class="row">';
           echo '<div class="col-sm-12">';
           echo '<div class="mx-4 first-row my-3">';
           echo '<img src="assets/images/icons/Location_icon.png">';
           echo '<span class="text1">Location: </span>';
-          echo "<span class='text2'>{$_COOKIE['locname']}</span>";
+          echo "<span class='text2'>{$locname}</span>";
           echo '</div>';
           echo '</div>';
           echo '</div>';
@@ -247,13 +276,13 @@ function scanbottle($tagnum, $withpicchecked) {
           echo '<input type="hidden" id="LOCDATE" name="LOCDATE" value="' . $startdate . '">';
           echo '<input type="submit"  name="savebutton" id="savebutton" style="display:none; background: url(saveicon.png) no-repeat; height: 700px; width: 500px;" >';
           echo '<div id="scandit-barcode-picker"></div>';
-          echo '</div>';
-          echo '</div>';
           echo '<div id="scanicon" align="center">';
           echo '<div class="col-sm-12 py-4">';
           echo '<button onclick="scannerstuff()" class="btn-scan" type="button">';
           echo '<span>Tap to Scan Bottle</span>';
           echo '</button>';
+          echo '</div>';
+          echo '</div>';
           echo '</div>';
           echo '</div>';
           echo '</form>';
@@ -333,7 +362,7 @@ echo '<div class="container footer">';
            echo '<div class="mx-4 first-row my-3">';
               echo '<img src="assets/images/icons/Location_icon.png">';
                echo '<span class="text1">Location: </span>';
-    echo "<span class='text2'>{$_COOKIE['locname']}</span>";
+    echo "<span class='text2'>{$locname}</span>";
 
     echo '</div>';
       echo '</div>';
@@ -484,10 +513,13 @@ function listmysamples($csvfilename = "") {
     # and places the table and a link to the CSV file into an email
     global $datapath, $clientid, $loctag;
     $clientid = checkuser();
-    $myfiles = $datapath . "samples/" . $clientid . "*.dat";
+    $myfiles = $datapath . "samples/" . $clientid . "_*.dat";
     $headerfilename = $datapath . "samples/" . "header.txt";
     $archivepath = $datapath . "samples/" . "archive/";
     $sentpath = "./sent/"; #destination for CSV Files
+    $csvurlpath= "https://mmchugh.ie/iwaternewgui/sent/"; #destination for CSV Files
+	$location = checktag($loctag);
+	$locname = $location[1];
 
     if (glob($myfiles)) {
         $myfiletable = "<thead>";
@@ -551,7 +583,7 @@ echo '</head>';
            echo '<div class="col-sm-12">';
                echo '<div  class="mx-3 my-3">';
                    echo '<img src="assets/images/icons/Client_icon.png">';
-                    echo "<span class='header-text1'>Client: </span> <span class='header-text2'>{$_COOKIE['clientid']}</span>";
+                    echo "<span class='header-text1'>Client: </span> <span class='header-text2'>{$clientid}</span>";
                echo '</div>';
             echo '</div>';
         echo '</div>';
@@ -562,7 +594,7 @@ echo '</head>';
                echo '</div>';
                 echo '<div class="icon-text">';
                    echo '<p class="text-heading">iLabLocation ID:</p>';
-                    echo "<p class='text-paragraph'>{$_COOKIE['loctag']}</p>";
+                    echo "<p class='text-paragraph'>{$loctag}</p>";
                 echo '</div>';
            echo '</div>';
         echo '</div>';
@@ -573,7 +605,7 @@ echo '</head>';
                 echo '<div class="mx-4 first-row my-3 ">';
                    echo '<img src="assets/images/icons/Location_icon.png">';
                    echo '<span class="text1">Location: </span>';
-        echo "<span class='text2'>{$_COOKIE['locname']}</span>";
+        echo "<span class='text2'>{$locname}</span>";
         echo '</div>';
            echo '</div>';
         echo '</div>';
@@ -588,7 +620,7 @@ echo '</head>';
         echo '<div class="row images-section py-3">';
             echo '<div class="col-sm-12">';
         if ($csvfilename) {
-            $csvurl = "http://mmchugh.ie/iwater/sent/" . $csvfilename;
+            $csvurl = $csvurlpath . $csvfilename;
             $csvsavefilename = $sentpath .  $csvfilename;
             $csvsavefile = fopen($csvsavefilename, "w") or die("Unable to save CSV File" . $csvsavefilename);
             fwrite($csvsavefile, $mycsvfile);
@@ -609,9 +641,12 @@ echo '</head>';
             echo '<div class="title mt-4">';
             echo '<h1>Or</h1>';
             echo '</div>';
-            echo '<a href="' . $scriptname . '?LOCTAG=' . $loctag .  '"><button class="btn-scan-location mt-2" type="button">';
+            //echo '<a href="' . $scriptname . '?LOCTAG=' . $loctag .  '"><button class="btn-scan-location mt-2" type="button">';
+            //echo '<img src="assets/images/location.png" class="me-2"><p>Tap NFC at New location</p>';
+            //echo '</button></a>';
+            echo '<button class="btn-scan-location mt-2" type="button" onclick="gotostart()">';
             echo '<img src="assets/images/location.png" class="me-2"><p>Tap NFC at New location</p>';
-            echo '</button></a>';
+            echo '</button>';
             echo '<a href=' . $scriptname .  '><button class="btn-scan-save mt-4" type="button">';
             echo '<img src="assets/images/lab.png"  class="me-2"><span>Save and submit to Lab</span>';
             echo '</button></a>';
