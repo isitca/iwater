@@ -1,6 +1,6 @@
 @import url("https://fonts.cdnfonts.com/css/roboto");
-body{
-    background-color: #313e48!important;
+body {
+    background-color: #313e48 !important;
 }
 .header {
     background-color: #313e48;
@@ -9,6 +9,13 @@ body{
 }
 .camera {
     padding-top: 60px;
+    padding-bottom: 60px;
+}
+
+img#preview-image {
+    margin: auto;
+    display: table;
+    width: 150px;
 }
 
 .camera h2 {
@@ -19,10 +26,9 @@ body{
 
 .header-reg {
     padding-bottom: 100px;
-
 }
 
-#selectedImage{
+#selectedImage {
     padding-top: 50px;
 }
 
@@ -33,15 +39,15 @@ body{
 }
 
 .success-header h2 {
-    font-family: 'Roboto';
+    font-family: "Roboto";
     font-style: normal;
     font-weight: 600;
     font-size: 26px;
-    color: #46B3B0;
+    color: #46b3b0;
 }
 
 .success-header p {
-    font-family: 'Roboto';
+    font-family: "Roboto";
     font-style: normal;
     font-weight: 600;
     font-size: 20px;
@@ -59,7 +65,7 @@ body{
     padding: 20px 0px 20px 0px;
     border: 1px solid rgba(0, 0, 0, 0.14);
 }
-.logo img{
+.logo img {
     width: 157px;
 }
 .header .header-text1 {
@@ -85,7 +91,6 @@ body{
     justify-content: center;
     padding: 6px;
 }
-
 
 .icon-text p {
     padding: 0;
@@ -256,7 +261,7 @@ input[type="checkbox"]::before {
 }
 
 .footer {
-    background: #FFFFFF;
+    background: #ffffff;
     border-radius: 30px;
     position: absolute;
     left: 0px;
@@ -275,12 +280,12 @@ input[type="checkbox"]::before {
 }
 
 .header-custom {
-    height: auto!important;
+    height: auto !important;
     padding-bottom: 0;
 }
 
 .middle {
-    background: #FFFFFF;
+    background: #ffffff;
     border-radius: 30px;
     padding-bottom: 35px;
     display: table;
@@ -297,86 +302,83 @@ div#scanicon {
     bottom: 9px;
 }
 
-.first-row .text1{
+.first-row .text1 {
     font-weight: 500;
     font-size: 12px;
-    color: #313E48;
+    color: #313e48;
     padding-left: 5px;
-
 }
-.first-row .text2{
+.first-row .text2 {
     font-weight: 400;
     font-size: 12px;
     width: 209px;
     color: rgba(0, 0, 0, 0.6);
     display: inline-flex;
-    font-family: 'Roboto';
+    font-family: "Roboto";
 }
-.images-section .img-box{
-    background: #DBE8E8;
+.images-section .img-box {
+    background: #dbe8e8;
     border-radius: 5px;
     display: flex;
     height: 100px;
-    justify-content:center ;
+    justify-content: center;
     padding: 5px;
 }
-.img-box1{
-    background: #DBE8E8;
+.img-box1 {
+    background: #dbe8e8;
     border-radius: 5px;
     display: flex;
-    justify-content:center ;
+    justify-content: center;
     padding: 5px;
 }
-.btn-scan{
+.btn-scan {
     width: 100%;
     border: none;
-    background: #46B3B0;
+    background: #46b3b0;
     border-radius: 5px;
     height: 45px;
 }
-.btn-scan span{
+.btn-scan span {
     letter-spacing: 0.02em;
-    color: #FFFFFF;
+    color: #ffffff;
     font-weight: 500;
     font-size: 15px;
 }
 
-
 .title {
-    width:100%;
-    text-align:center;
+    width: 100%;
+    text-align: center;
     position: relative;
 }
 
 .title h1 {
-    position:relative;
-    padding:10px;
+    position: relative;
+    padding: 10px;
     background: #fff;
     display: inline-block;
     z-index: 1;
-    font-family: 'Roboto';
+    font-family: "Roboto";
     font-style: normal;
     font-weight: 600;
     font-size: 16px;
-    color: #46B3B0;
-
+    color: #46b3b0;
 }
 
 .title::after {
-    content:'';
+    content: "";
     position: absolute;
     left: 0;
     right: 0;
     top: 42%;
     height: 1px;
-    background: #929E9D;
-    z-index:0;
+    background: #929e9d;
+    z-index: 0;
 }
 
-.btn-scan-location{
+.btn-scan-location {
     width: 100%;
     border: none;
-    background: #50687A;
+    background: #50687a;
     border-radius: 5px;
     color: #fff;
     padding: 7px 0px;
@@ -385,25 +387,24 @@ div#scanicon {
     align-items: center;
 }
 
-.btn-scan-save{
+.btn-scan-save {
     width: 100%;
     border: none;
-    background: #C7EEFF;
+    background: #c7eeff;
     border-radius: 5px;
     height: 45px;
-    color: #1D475B;
+    color: #1d475b;
 }
 
-
 .table thead th {
-    background: #313E48;
+    background: #313e48;
     color: #fff;
-    font-family: 'Roboto';
+    font-family: "Roboto";
     font-style: normal;
     font-weight: 600;
     font-size: 13px;
     text-align: center;
-    color: #ACB7C0;
+    color: #acb7c0;
     padding: 12px 0px;
 }
 .client-id {
@@ -413,22 +414,20 @@ div#scanicon {
     border-radius: 0px 10px 0px 0px;
 }
 
-
 .table > tbody td {
     font-style: normal;
     font-weight: 400;
     font-size: 12px;
     text-align: center;
-    color: #313E48;
+    color: #313e48;
 }
 
-.btn-scan-bottle
-{
+.btn-scan-bottle {
     width: 100%;
     border: none;
-    background: #46B3B0;
+    background: #46b3b0;
     border-radius: 5px;
-    font-family: 'Roboto';
+    font-family: "Roboto";
     font-style: normal;
     font-weight: 500;
     font-size: 15px;
@@ -437,14 +436,13 @@ div#scanicon {
     padding: 11px 0px;
 }
 
-
 .btn-scan-location img {
     position: relative;
 }
 .btn-scan-location p {
     line-height: 0;
     margin-top: 15px;
-    font-family: 'Roboto';
+    font-family: "Roboto";
     font-style: normal;
     font-weight: 400;
     font-size: 15px;
@@ -453,20 +451,19 @@ div#scanicon {
 .btn-scan-save img {
     margin-top: -5px;
 }
-.upload-picture-btn{
-    padding-top: 110px;
+.upload-picture-btn {
+    padding-top: 22px;
     padding-bottom: 30px;
 }
-#uploadicon{
+#uploadicon {
     border: none;
 }
-
 
 .upload {
     position: absolute;
     left: 50%;
-    top: 18%;
-    transform: translate(-50%, -50%);
+    top: 20%;
+    transform: translate(-49%, -38%);
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -498,5 +495,5 @@ div#scanicon {
 
 .upload-img {
     position: relative;
-    margin-top: 25px!important;
+    margin-top: 25px !important;
 }

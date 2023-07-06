@@ -161,18 +161,18 @@ function regtag($tagnum)
 function logsample($tagnum, $location, $clientid)
 {
     global $datapath, $locdate;
-    echo '<div id="hideatend">';
-    //    echo "Location:<br> $location[1] <br>"; //
     $withpicchecked = "";
     if ($location[0] == "withpic") {
         $withpicchecked = " checked ";
     }
 
-    $bottletag = scanbottle($tagnum, $withpicchecked); # $location[0] = withpic or nopic from filename to default the checkbox
+    $bottle_and_room = scanbottle($tagnum, $withpicchecked); # $location[0] = withpic or nopic from filename to default the checkbox
+    $bottletag = $bottle_and_room[0];
+    $room = $bottle_and_room[1]; # room is an optional typed number that gets appended to the location ID
     $bottletag = preg_replace('/[\W]/', '', $bottletag);
-    #$bottletag = substr($bottletag, 0, 10); //these 2 lines allow testing with any barcode by filtering and chopping
-    echo '</div>'; #End of hideatend
-    #scannerstuff();
+    if ($room) {
+        $room = preg_replace('/[\W]/', '', $room);
+    }
     if ($bottletag) {
         $datestamp = date("YmdHis");
         $locdate = $_GET["LOCDATE"]; # retrieve start date from tag
@@ -180,24 +180,15 @@ function logsample($tagnum, $location, $clientid)
         # - can be used to group locations or categorise bottles
         list($bottleid, $bottletype) = explode("_", $bottletag);
         list($locid, $locsite) = explode("_", $tagnum);
-        $basefilename = $datapath . "samples/" . $clientid . "_" . $locdate . "_" . $datestamp . "_" . $locsite . "_" . $locid . "_" . $bottletype . "_" . $bottleid;
-        #$picornot = $location[0];
-        #We now get this from checkbox instead
+        $basefilename = $datapath . "samples/" . $clientid . "_" . $bottletype . "_" . $bottleid . "_" . $locsite . "_" . $locid . "_" . $room . "_" . $locdate . "_" . $datestamp;
         $picornot = $_GET["WITHPIC"]; #Note this collects by name not ID
-        #echo "<script type='text/javascript'>alert('$picornot');</script>";
         saveresult($basefilename, $picornot); # We have location and bottle ID
         if ($picornot == "withpic") {
             # Filetype JPG etc will be appended
             picproc($basefilename);
         } else {
-            savefilenopic($basefilename, "NOPIC"); # result saved - just show last screen
+            listmysamples("", $bottletag); # result saved - just show last screen
         }
-        #elseif ($picornot == "nopic") {
-        #	savefilenopic($basefilename, "NOPIC"); # result saved - just show last screen
-        #}
-        #elseif ($picornot == "multiloc") {
-        #	multilocproc($basefilename);  # also a txt file but with individual Location
-        #}
     }
 }
 
@@ -206,9 +197,12 @@ function scanbottle($tagnum, $withpicchecked)
     $location = checktag($tagnum);
     $locname = $location[1];
     $scriptname = basename($_SERVER["SCRIPT_FILENAME"]);
-    $bottletag = isset($_GET['BOTTLETAG']) ? $_GET['BOTTLETAG'] : null; # Filled by the previous cycle
+    $bottletag = isset($_GET['BOTTLETAG']) ? $_GET['BOTTLETAG'] : ""; # Filled by the previous cycle
+    $room = isset($_GET['ROOM']) ? $_GET['ROOM'] : ""; # Optional typed text which will be tagged onto location ID
     if ($bottletag) {
-        return $bottletag;
+        $bottle_and_room[0] = $bottletag;
+        $bottle_and_room[1] = $room;
+        return $bottle_and_room;
     } else {
         echo '<html lang="en">';
         echo '<head>';
@@ -217,8 +211,10 @@ function scanbottle($tagnum, $withpicchecked)
         echo '<title>iWater</title>';
         echo '<link href="assets/style.css" rel="stylesheet"/>';
         echo '<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">';
+        echo '<script type="text/javascript"> function noenter() {   return !(window.event && window.event.keyCode == 13); } </script> ';
         echo '</head>';
         echo '<body>';
+        echo '<form method="get" action="' . $scriptname . '" autocomplete="off">';
 
         echo '<div class="container header" id="header">';
         echo '<div class="row">';
@@ -229,13 +225,14 @@ function scanbottle($tagnum, $withpicchecked)
         echo '<div class="row">';
         echo '<div class="col-5 my-3 mx-3">';
         echo '<div class="icon-text">';
-        echo '<p class="text-heading">iLabLocation ID:</p>';
+        echo '<p class="text-heading">Location ID:</p>';
         echo "<p class='text-paragraph'>{$tagnum}</p>";
         echo '</div>';
         echo '</div>';
         echo '<div  class="col-3 my-3 ps-3">';
-        echo '<img src="assets/images/icons/Client_icon.png">';
-        echo "<span class='header-text1'>Client: </span> <span class='header-text2'>{$_COOKIE['clientid']}</span>";
+        // echo '<img src="assets/images/icons/Client_icon.png">';
+        //echo "<span class='header-text1'>Client_Device: </span> <span class='header-text2'>{$_COOKIE['clientid']}</span>";
+        echo "<span class='header-text1'>Client_Device: </span> <span class='header-text2'>{$_COOKIE['clientid']}</span>";
         echo '</div>';
         echo '</div>';
         echo '</div>';
@@ -243,16 +240,19 @@ function scanbottle($tagnum, $withpicchecked)
         echo '<div class="row head">';
         echo '<div class="col pt-0 d-flex justify-content-center">';
         echo '<div class="mt-2 mx-3">';
-        echo '<p class="text-heading">Room</p>';
+        $roomlabel = "Note";
+        echo '<p class="text-heading">' . $roomlabel . '</p>';
         echo '</div>';
         echo '<div class="icon-text">';
-        echo "<p class='text-paragraph'><input type='text' style='background: #fff;'></p>";
+        $hideroom = "'text'";
+        //$hideroom = "'hidden'";
+        echo "<p class='text-paragraph'><input type= " . $hideroom . " style='background: #888;' name='ROOM' id='ROOM' value='' onkeypress='return noenter()' ></p>";
         echo '</div>';
         echo '</div>';
         echo '<div class="col pt-0 d-flex justify-content-start">';
-        echo '<div class="bg-icon">';
-        echo '<img src="assets/images/icons/photo_icon.png">';
-        echo '</div>';
+        // echo '<div class="bg-icon">';
+        // echo '<img src="assets/images/icons/photo_icon.png">';
+        // echo '</div>';
         echo '<div class="icon-text mx-3 d-flex">';
         echo '<label class="checkbox">';
         echo '<p class="text-heading">Include Photo</p>';
@@ -276,7 +276,8 @@ function scanbottle($tagnum, $withpicchecked)
         echo '<div class="row images-section">';
         echo '<div class="col-sm-12">';
         echo '<div class="col-sm-12 img-box1">';
-        echo '<img src="assets/images/Rectangle 21.png">';
+        //echo '<img src="assets/images/Rectangle 21.png">';
+        echo '<img src="assets/images/bottle_1 3.png" onclick="scannerstuff()" >';
         echo '</div>';
         echo '</div>';
         echo '<input type="hidden"  name="LOCTAG" id="LOCTAG" value="' . $tagnum . '" >';
@@ -357,40 +358,48 @@ function takepic($picfilename, $beforeorafter)
     echo '<div class="bg-icon mx-3">';
     echo '<img src="assets/images/icons/lab_icon.png">';
     echo '</div>';
-    echo '<div class="icon-text">';
-    echo '<p class="text-heading">iLabLocation ID:</p>';
-    echo "<p class='text-paragraph'>{$_COOKIE['loctag']}</p>";
-    echo '</div>';
+    // echo '<div class="icon-text">';
+    // echo '<p class="text-heading">iLabLocation ID:</p>';
+    // echo "<p class='text-paragraph'>{$_COOKIE['loctag']}</p>";
+    // echo '</div>';
     echo '</div>';
     echo '</div>';
     echo '</div>';
     echo '<div class="container footer">';
     echo '<div class="row">';
     echo '<div class="col-sm-12">';
-    echo '<div class="mx-4 first-row my-3">';
-    echo '<img src="assets/images/icons/Location_icon.png">';
-    echo '<span class="text1">Location: </span>';
-    echo "<span class='text2'>{$locname}</span>";
-
-    echo '</div>';
+    // echo '<div class="mx-4 first-row my-3">';
+    // echo '<img src="assets/images/icons/Location_icon.png">';
+    // echo '<span class="text1">Location: </span>';
+    // echo "<span class='text2'>{$locname}</span>";
+    // echo '</div>';
     echo '</div>';
     echo '</div>';
     echo '<form action="" method="post" enctype="multipart/form-data">';
     echo '<div class="row images-section camera" id="emptyBottleImage">';
-    echo '<h2 id="bottle-label-empty">Upload photo of empty bottle</h2>';
-    echo '<h2 id="bottle-label-filled" style="display: none">Upload photo of filled bottle</h2>';
+
+    if ($beforeorafter == "BEFORE") {
+        echo '<h2 id="bottle-label-empty">Take photo of EMPTY bottle</h2>';
+        echo '<div id="image-preview" style="display: none;">
+                     <img id="preview-image" src="#" alt="Preview Image">
+                  </div>';
+    } else {
+        //echo '<h2 id="bottle-label-filled" style="display: none">Take photo of FILLED bottle</h2>';
+        echo '<h2 id="bottle-label-filled" >Take photo of FILLED bottle</h2>';
+    }
 
     echo '<div class="upload-img">';
     echo '<div class="upload">';
     echo '<label class="upload-area">';
-    echo '<input type="file" id="takepic" name="takepic" accept="image/*" capture="camera" onchange="onSelectImg()">';
-    echo '<span class="upload-button" id="cameraicon" style="cursor:pointer;" onclick="cameraclick()">';
+    echo '<input type="file" id="takepic" name="takepic" accept="image/*" capture="camera" >';
+    echo '<span class="upload-button" id="cameraicon" style="cursor:pointer;" >';
     echo '<i class="fa fa-camera" ></i>';
     echo '</span>';
     echo '</label>';
     echo '</div>';
-    echo '<div class="mx-5 upload-picture-btn">';
-    echo '<input type="submit" value="Upload Picture" name="uploadpic" id="uploadicon">';
+    echo '<div class="mx-5 upload-picture-btn" >';
+    echo '<input type="submit" value="Upload Picture" name="uploadpic" id="uploadicon" >';
+
     echo "<input type=\"text\" id=\"savefilename\" name=\"savefilename\" value=\"$picfilename\" hidden >";
     echo "<input type=\"text\" id=\"beforeorafter\" name=\"beforeorafter\" value=\"$beforeorafter\" hidden >";
     echo '</div>';
@@ -456,7 +465,7 @@ function uploadpic()
     $beforeorafter = $_POST["beforeorafter"];
     $savefilename = $_POST["savefilename"];
     $target_file = $savefilename . "_" . $beforeorafter . "." . $imageFileType;
-    #echo "<br>$target_file <br>";
+    // echo "<br>$target_file <br>";
     // Check if image file is a actual image or fake image
     if (isset($_POST["submit"])) {
         $check = getimagesize($_FILES["takepic"]["tmp_name"]);
@@ -481,7 +490,7 @@ function uploadpic()
     // Allow certain file formats
 
     if ($imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpeg" && $imageFileType != "gif") {
-        echo "Sorry, only JPG, JPEG, PNG & GIF files are allowed.";
+        echo "Filename: " . $target_file . "<br>Sorry, only JPG, JPEG, PNG & GIF files are allowed.";
         $uploadOk = 0;
     }
     // Check if $uploadOk is set to 0 by an error
@@ -493,14 +502,14 @@ function uploadpic()
             //            echo "<br>The file ". htmlspecialchars( basename( $_FILES["takepic"]["name"])). " has been uploaded to " . basename($target_file) . "<br>";
 
             if ($beforeorafter == "BEFORE") {
-                //                echo "<br>Now Fill the Bottle before taking a second picture of the bottle<br>";
-                echo '<script>window.onload = function() {';
-                echo 'document.getElementById("bottle-label-empty").style.display = "none";';
-                echo 'document.getElementById("bottle-label-filled").style.display = "block";};';
-                echo '</script>';
+                //echo "<br>Now Fill the Bottle before taking a second picture of the bottle<br>";
+                //echo '<script>window.onload = function() {';
+                //echo 'document.getElementById("bottle-label-empty").style.display = "none";';
+                //echo 'document.getElementById("bottle-label-filled").style.display = "block";};';
+                //echo '</script>';
                 takepic($savefilename, "AFTER");
             } elseif ($beforeorafter == "AFTER") {
-                lastscreen();
+                listmysamples();
             }
         } else {
             echo "Sorry, there was an error uploading your file.";
@@ -515,7 +524,19 @@ function lastscreen()
     listmysamples();
 }
 
-function listmysamples($csvfilename = "")
+function exceldate($datenums)
+{
+    // converts the string to date time for excel
+    $year = substr($datenums, 0, 4);
+    $month = substr($datenums, 4, 2);
+    $day = substr($datenums, 6, 2);
+    $hour = substr($datenums, 8, 2);
+    $minute = substr($datenums, 10, 2);
+    $second = substr($datenums, 12, 2);
+    return $year . "/" . $month . "/" . $day . " " . $hour . ":" . $minute . ":" . $second;
+}
+
+function listmysamples($csvfilename = "", $bottletag = "")
 {
     # Show a table with all samples collected by current user with option to download (move to folder for collection)
     # When Called with filename, it archives the individual sample files and creates the CSV File
@@ -526,7 +547,7 @@ function listmysamples($csvfilename = "")
     $headerfilename = $datapath . "samples/" . "header.txt";
     $archivepath = $datapath . "samples/" . "archive/";
     $sentpath = "./sent/"; #destination for CSV Files
-    $csvurlpath = "https://mmchugh.ie/iwaternewgui/sent/"; #destination for CSV Files
+    $csvurlpath = "https://mmchugh.ie/iwater/sent/"; #destination for CSV Files
     $location = checktag($loctag);
     $locname = $location[1];
 
@@ -542,10 +563,13 @@ function listmysamples($csvfilename = "")
         $tr = explode(",", $header);
         foreach ($tr as $td) {
             $myfiletable = $myfiletable . "<th>" . $td . "</th>";
-            $mycsvfile = $mycsvfile . $td . ",";
+            //$mycsvfile = $mycsvfile . $td . ",";
         }
+        //$myfiletable = $myfiletable . "<th>Location Name</th>";
         $myfiletable = $myfiletable . "</tr></thead><tbody>";
-        $mycsvfile = $mycsvfile . "location Name\n"; #Add an extra column for locatrion name
+        //$mycsvfile = $mycsvfile . "location Name\n"; #Add an extra column for locatrion name
+        //$mycsvfile = $header . "location Name\n"; #Add an extra column for locatrion name
+        $mycsvfile = $header . "\n";
         $samplefilelist = glob($myfiles); #list all sample files saved
         #$grandtotal = 0;
 
@@ -559,16 +583,21 @@ function listmysamples($csvfilename = "")
             $locationname = $location[1];
             #$lastitem = count($tr);
             $itemnum = 0;
+            // Last two (6 and 7) are time stamps - convert for excel in csv
+            $tr[6] = exceldate($tr[6]);
+            $tr[7] = exceldate($tr[7]);
             foreach ($tr as $td) {
                 $myfiletable = $myfiletable . "<td>" . $td . "</td>";
                 $mycsvfile = $mycsvfile . $td . ",";
+                $myemailbody = $myemailbody . $td . "%09";
             }
-            $myfiletable = $myfiletable . "</tr>";
+            $myfiletable = $myfiletable . "<td>" . $locationname . "</td></tr>";
             if ($csvfilename != "") {
                 #archive off the sample file so we don't see it again
                 rename($thisfilename, $archivepath . basename($thisfilename));
             }
             $mycsvfile = $mycsvfile . $locationname . "\r\n";
+            $myemailbody = $myemailbody . $locationname . "%0A";
         }
         $myfiletable = $myfiletable . "</tbody>";
 
@@ -587,35 +616,37 @@ function listmysamples($csvfilename = "")
         echo '<div class="col-sm-12 logo">';
         echo '<img src="assets/images/logo.png"/>';
         echo '</div>';
-        echo '<div class="col-sm-12">';
+        // echo '<div class="col-sm-12">';
         echo '<div  class="mx-3 my-3">';
-        echo '<img src="assets/images/icons/Client_icon.png">';
-        echo "<span class='header-text1'>Client: </span> <span class='header-text2'>{$clientid}</span>";
+        // echo '<img src="assets/images/icons/Client_icon.png">';
+        if ($bottletag != "") {
+            echo "<span class='header-text1'>Bottle ID: {$bottletag}<br> Location: {$loctag} <br>{$locname} </span>";
+        }
         echo '</div>';
+        // echo '</div>';
         echo '</div>';
-        echo '</div>';
-        echo '<div class="row head">';
-        echo '<div class="col-6 py-3 d-flex justify-content-center">';
-        echo '<div class="bg-icon mx-3">';
-        echo '<img src="assets/images/icons/lab_icon.png">';
-        echo '</div>';
-        echo '<div class="icon-text">';
-        echo '<p class="text-heading">iLabLocation ID:</p>';
-        echo "<p class='text-paragraph'>{$loctag}</p>";
-        echo '</div>';
-        echo '</div>';
-        echo '</div>';
+        // echo '<div class="row head">';
+        // echo '<div class="col-6 py-3 d-flex justify-content-center">';
+        // echo '<div class="bg-icon mx-3">';
+        // echo '<img src="assets/images/icons/lab_icon.png">';
+        // echo '</div>';
+        // echo '<div class="icon-text">';
+        // echo '<p class="text-heading">iLabLocation ID:</p>';
+        // echo "<p class='text-paragraph'>{$loctag}</p>";
+        // echo '</div>';
+        // echo '</div>';
+        // echo '</div>';
         echo '</div>';
         echo '<div class="container footer">';
-        echo '<div class="row">';
-        echo '<div class="col-sm-12">';
-        echo '<div class="mx-4 first-row my-3 ">';
-        echo '<img src="assets/images/icons/Location_icon.png">';
-        echo '<span class="text1">Location: </span>';
-        echo "<span class='text2'>{$locname}</span>";
-        echo '</div>';
-        echo '</div>';
-        echo '</div>';
+        // echo '<div class="row">';
+        // echo '<div class="col-sm-12">';
+        // echo '<div class="mx-4 first-row my-3 ">';
+        // echo '<img src="assets/images/icons/Location_icon.png">';
+        // echo '<span class="text1">Location: </span>';
+        // echo "<span class='text2'>{$locname}</span>";
+        // echo '</div>';
+        // echo '</div>';
+        // echo '</div>';
         echo '<div class="row images-section">';
         echo '<div class="table-responsive">';
         echo '<table class="table table-striped">';
@@ -626,34 +657,39 @@ function listmysamples($csvfilename = "")
         echo '</div>';
         echo '<div class="row images-section py-3">';
         echo '<div class="col-sm-12">';
-        if ($csvfilename) {
+        if ($csvfilename != "") {
             $csvurl = $csvurlpath . $csvfilename;
             $csvsavefilename = $sentpath . $csvfilename;
             ($csvsavefile = fopen($csvsavefilename, "w")) or die("Unable to save CSV File" . $csvsavefilename);
             fwrite($csvsavefile, $mycsvfile);
             fclose($csvsavefile);
-            $myfiletable = $myfiletable . '<br><a href=' . $csvurl . '>Download or view CSV file ' . $csvurl . '</a><br>';
+            //$myfiletable = $myfiletable . '<br><a href=' . $csvurl . '>Download or view CSV file ' . $csvurl . '</a><br>';
             $htmlheader = '<html><head></head><body>';
             $htmlfooter = '</body></html>';
-            echo "<a href=\"mailto:maurice@mmchugh.ie?subject=samples&body=" . $htmlheader . $myfiletable . $htmlfooter . "\">";
+            echo '<a href="mailto:maurice@mmchugh.ie?subject=samples&body=' . $csvurl . '%0A%0A' . $myemailbody . '">';
             echo "<button class='btn-scan-bottle mb-4' type='button'>";
             echo 'Mail this';
             echo '</button></a>';
         } else {
             $scriptname = basename($_SERVER["SCRIPT_FILENAME"]);
-            echo '<a href="' . $scriptname . '?LOCTAG=' . $loctag . '"> <button class="btn-scan-bottle" type="button">';
-            echo 'Scan Another Bottle at this Location';
-            echo '</button></a>';
-            echo '<div class="title mt-4">';
-            echo '<h1>Or</h1>';
-            echo '</div>';
-            //echo '<a href="' . $scriptname . '?LOCTAG=' . $loctag .  '"><button class="btn-scan-location mt-2" type="button">';
-            //echo '<img src="assets/images/location.png" class="me-2"><p>Tap NFC at New location</p>';
-            //echo '</button></a>';
-            echo '<button class="btn-scan-location mt-2" type="button" onclick="gotostart()">';
-            echo '<img src="assets/images/location.png" class="me-2"><p>Tap NFC at New location</p>';
-            echo '</button>';
-            echo '<a href=' . $scriptname . '><button class="btn-scan-save mt-4" type="button">';
+            if ($loctag != "") {
+                // must have been called by a scan - Else this was called with no params
+                echo '<a href="' . $scriptname . '?LOCTAG=' . $loctag . '"> <button class="btn-scan-bottle" type="button">';
+                echo 'Scan Another Bottle at this Location';
+                echo '</button></a>';
+                echo '<div class="title mt-4">';
+                echo '<h1>Or</h1>';
+                echo '</div>';
+                //echo '<a href="' . $scriptname . '?LOCTAG=' . $loctag .  '"><button class="btn-scan-location mt-2" type="button">';
+                //echo '<img src="assets/images/location.png" class="me-2"><p>Tap NFC at New location</p>';
+                //echo '</button></a>';
+                echo '<button class="btn-scan-location mt-2" type="button" onclick="gotostart()">';
+                echo '<img src="assets/images/location.png" class="me-2"><p>Tap NFC at New location</p>';
+                echo '</button>';
+            }
+            $datestamp = date("YmdHis");
+            $csvfilename = $clientid . $datestamp . ".csv";
+            echo '<a href=' . $scriptname . '?CSVFILENAME=' . $csvfilename . '><button class="btn-scan-save mt-4" type="button">';
             echo '<img src="assets/images/lab.png"  class="me-2"><span>Save and submit to Lab</span>';
             echo '</button></a>';
         }
