@@ -380,6 +380,11 @@ function takepic($picfilename, $beforeorafter)
 
     if ($beforeorafter == "BEFORE") {
         echo '<h2 id="bottle-label-empty">Take photo of EMPTY bottle</h2>';
+        echo '<div class="upload-picture-btn" >';
+        echo '<input type="submit" value="Upload Picture" name="uploadpic" id="uploadicon">';
+        echo "<input type=\"text\" id=\"savefilename\" name=\"savefilename\" value=\"$picfilename\" hidden >";
+        echo "<input type=\"text\" id=\"beforeorafter\" name=\"beforeorafter\" value=\"$beforeorafter\" hidden >";
+        echo '</div>';
         echo '<div id="image-preview" style="display: none;">
                      <img id="preview-image" src="#" alt="Preview Image">
                   </div>';
@@ -396,12 +401,6 @@ function takepic($picfilename, $beforeorafter)
     echo '<i class="fa fa-camera" ></i>';
     echo '</span>';
     echo '</label>';
-    echo '</div>';
-    echo '<div class="mx-5 upload-picture-btn" >';
-    echo '<input type="submit" value="Upload Picture" name="uploadpic" id="uploadicon" >';
-
-    echo "<input type=\"text\" id=\"savefilename\" name=\"savefilename\" value=\"$picfilename\" hidden >";
-    echo "<input type=\"text\" id=\"beforeorafter\" name=\"beforeorafter\" value=\"$beforeorafter\" hidden >";
     echo '</div>';
     echo '</div>';
 
