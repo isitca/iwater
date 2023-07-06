@@ -55,13 +55,6 @@ if (isset($showRegisterForm) && $showRegisterForm) { ?>
         $("#uploadicon").hide();
 
         // When the camera icon is clicked
-        $("#cameraicon").click(function () {
-            // Show the upload button
-
-            // Hide the camera icon
-            $(this).hide();
-        });
-
         // When a file is selected
         $("#takepic").change(function () {
             var input = this;
