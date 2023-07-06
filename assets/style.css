@@ -15,7 +15,7 @@ body {
 img#preview-image {
     margin: auto;
     display: table;
-    width: 150px;
+    width: 100px;
 }
 
 .camera h2 {
