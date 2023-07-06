@@ -1,1 +1,0 @@
-Client ID,Location scanned,Bottle scanned,Site,Location ID,Sample Type,Bottle ID
