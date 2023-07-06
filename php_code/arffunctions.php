@@ -387,7 +387,7 @@ function takepic($picfilename, $beforeorafter)
         echo '</div>';
         echo '<div id="image-preview" style="display: none;">
                      <img id="preview-image" src="#" alt="Preview Image">
-                  </div>';
+              </div>';
     } else {
         //echo '<h2 id="bottle-label-filled" style="display: none">Take photo of FILLED bottle</h2>';
         echo '<h2 id="bottle-label-filled" >Take photo of FILLED bottle</h2>';
