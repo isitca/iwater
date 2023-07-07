@@ -9,7 +9,6 @@ body {
 }
 .camera {
     padding-top: 60px;
-    padding-bottom: 60px;
 }
 
 img#preview-image {
@@ -21,7 +20,7 @@ img#preview-image {
 .camera h2 {
     font-size: 16px;
     text-align: center;
-    padding-bottom: 20px;
+    padding-bottom: 7px;
 }
 
 .header-reg {
@@ -451,22 +450,18 @@ div#scanicon {
 .btn-scan-save img {
     margin-top: -5px;
 }
-.upload-picture-btn {
-    padding-top: 22px;
-    padding-bottom: 30px;
+
+div#image-preview {
+    margin-top: 22px;
 }
+
 #uploadicon {
     border: none;
 }
 
 .upload {
-    position: absolute;
-    left: 50%;
-    top: 20%;
-    transform: translate(-49%, -38%);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+    display: table;
+    margin: auto;
 }
 .upload label {
     cursor: pointer;
@@ -495,5 +490,5 @@ div#scanicon {
 
 .upload-img {
     position: relative;
-    margin-top: 25px !important;
+    margin-top: 15px !important;
 }

@@ -377,22 +377,20 @@ function takepic($picfilename, $beforeorafter)
     echo '</div>';
     echo '<form action="" method="post" enctype="multipart/form-data">';
     echo '<div class="row images-section camera" id="emptyBottleImage">';
-
     if ($beforeorafter == "BEFORE") {
         echo '<h2 id="bottle-label-empty">Take photo of EMPTY bottle</h2>';
-        echo '<div class="upload-picture-btn" >';
-        echo '<input type="submit" value="Upload Picture" name="uploadpic" id="uploadicon">';
-        echo "<input type=\"text\" id=\"savefilename\" name=\"savefilename\" value=\"$picfilename\" hidden >";
-        echo "<input type=\"text\" id=\"beforeorafter\" name=\"beforeorafter\" value=\"$beforeorafter\" hidden >";
-        echo '</div>';
-        echo '<div id="image-preview" style="display: none;">
-                     <img id="preview-image" src="#" alt="Preview Image">
-              </div>';
     } else {
         //echo '<h2 id="bottle-label-filled" style="display: none">Take photo of FILLED bottle</h2>';
         echo '<h2 id="bottle-label-filled" >Take photo of FILLED bottle</h2>';
     }
-
+    echo '<div class="upload-picture-btn" >';
+    echo '<input type="submit" value="Upload Picture" name="uploadpic" id="uploadicon">';
+    echo "<input type=\"text\" id=\"savefilename\" name=\"savefilename\" value=\"$picfilename\" hidden >";
+    echo "<input type=\"text\" id=\"beforeorafter\" name=\"beforeorafter\" value=\"$beforeorafter\" hidden >";
+    echo '</div>';
+    echo '<div id="image-preview" style="display: none;">
+                 <img id="preview-image" src="#" alt="Preview Image">
+          </div>';   
     echo '<div class="upload-img">';
     echo '<div class="upload">';
     echo '<label class="upload-area">';
@@ -403,9 +401,7 @@ function takepic($picfilename, $beforeorafter)
     echo '</label>';
     echo '</div>';
     echo '</div>';
-
     echo '</div>';
-
     echo '</form>';
 
     //    echo '<form action="" method="post" enctype="multipart/form-data">';
